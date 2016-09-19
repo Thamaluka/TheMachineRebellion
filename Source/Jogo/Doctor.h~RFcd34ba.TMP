@@ -34,12 +34,6 @@ public:
 
 	void SetPower(int NewPower);
 	int GetPower();
-
-	void Cura();
-	void Bomba();
-	void Quimico();
-	void Nitrogenio();
-
 private:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -54,5 +48,4 @@ private:
 	FVector StartPlayer;
 	int Life;
 	int Power;
-	bool SuperPower;
 };

@@ -51,6 +51,9 @@ ADoctor::ADoctor()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
+	Life = 3000;
+	Power = 0;
+	
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
@@ -79,13 +82,72 @@ void ADoctor::Tick( float DeltaTime )
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
 	}
-
 }
 
 // Called to bind functionality to input
 void ADoctor::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
+	InputComponent->BindAction("Cura", IE_Pressed, this, &ADoctor::Cura);
+	InputComponent->BindAction("Bomba", IE_Pressed, this, &ADoctor::Bomba);
+	InputComponent->BindAction("Quimico", IE_Pressed, this, &ADoctor::Quimico);
+	InputComponent->BindAction("Nitrogenio", IE_Pressed, this, &ADoctor::Nitrogenio);
+
+}
+
+void ADoctor::SetLife(int NewLife) {
+	Life = NewLife;
+}
+
+
+int ADoctor::GetLife() {
+	return Life;
+}
+
+void ADoctor::OnDeath() {
+	if (Life <= 0) {
+		FVector InitialLocation(StartPlayer);
+		Life = 3000;
+		SetActorLocation(InitialLocation);
+	}
+}
+
+
+
+
+//Energia
+void ADoctor::SetPower(int NewPower) {
+	if (NewPower > 0) {
+		NewPower = NewPower + Power;
+	}
+	else {
+		Power = NewPower;
+	}
+}
+
+int ADoctor::GetPower() {
+	if (Power > 3000) {
+		SuperPower = true;
+	}
+	return Power;
+}
+
+
+
+
+//Poderes pelas teclas Q,W,E e R
+void ADoctor::Cura() {
+
+}
+
+void ADoctor::Bomba() {
+
+}
+void ADoctor::Quimico() {
+
+}
+void ADoctor::Nitrogenio() {
+	//if(SuperPower)
 
 }
 
