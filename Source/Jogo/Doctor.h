@@ -51,6 +51,12 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
 
+	UPROPERTY(EditAnywhere)
+		UArrowComponent* ArrowComp;
+
+	UPROPERTY(EditAnywhere)
+		class ACuraPower* Proj;
+
 	FVector StartPlayer;
 	int Life;
 	int Power;

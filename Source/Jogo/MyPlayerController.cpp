@@ -16,7 +16,6 @@ void AMyPlayerController::PlayerTick(float DeltaTime) {
 	if (bMoveToMouseCursor)
 	{
 		MoveToMouseCursor();
-		UE_LOG(LogTemp,Warning,TEXT("Teste"));
 	}
 
 }

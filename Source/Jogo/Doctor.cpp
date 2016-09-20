@@ -4,6 +4,8 @@
 #include "Doctor.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
+#include "CuraPower.h"
+#include "ProjectileActor.h"
 
 
 // Sets default values
@@ -50,7 +52,12 @@ ADoctor::ADoctor()
 	
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
-
+	/*
+	ArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComp"));
+	ArrowComp->SetHiddenInGame(true);
+	ArrowComp->ArrowSize = 2.0f;
+	ArrowComp->AttachTo(RootComponent);
+	*/
 	Life = 3000;
 	Power = 0;
 	
@@ -137,16 +144,63 @@ int ADoctor::GetPower() {
 
 //Poderes pelas teclas Q,W,E e R
 void ADoctor::Cura() {
+	if (Proj == nullptr) {
+		FActorSpawnParameters SpawnParameters;
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			FRotator Rotation = RootComponent->GetComponentRotation();
+			Proj = World->SpawnActor<ACuraPower>(GetActorLocation(), Rotation, SpawnParameters);
+			if (Proj != nullptr) {
+				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+			}
+		}
+		if(Life+120 < 3000)
+		Life = Life + 120;
+	}
 }
 
 void ADoctor::Bomba() {
+	FActorSpawnParameters SpawnParameters;
+	UWorld* World = GetWorld();
+	if (World != nullptr) {
+		FRotator Rotation = RootComponent->GetComponentRotation();
+		AProjectileActor* Proj = World->SpawnActor<AProjectileActor>
+			(GetActorLocation(), Rotation,
+				SpawnParameters);
+		if (Proj != nullptr) {
+		//	UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+		}
+	}
 
 }
 void ADoctor::Quimico() {
-
+	//if (Proj == nullptr) {
+		FActorSpawnParameters SpawnParameters;
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			FRotator Rotation = RootComponent->GetComponentRotation();
+			Proj = World->SpawnActor<ACuraPower>(GetActorLocation(), Rotation, SpawnParameters);
+			if (Proj != nullptr) {
+				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+			}
+		}
+		
+	//}
 }
 void ADoctor::Nitrogenio() {
 	//if(SuperPower)
+	//if (Proj == nullptr) {
+		FActorSpawnParameters SpawnParameters;
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			FRotator Rotation = RootComponent->GetComponentRotation();
+			Proj = World->SpawnActor<ACuraPower>(GetActorLocation(), Rotation, SpawnParameters);
+			if (Proj != nullptr) {
+				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+			}
+		}
+
+	//}
 
 }
 
