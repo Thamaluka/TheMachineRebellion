@@ -137,7 +137,6 @@ int ADoctor::GetPower() {
 
 //Poderes pelas teclas Q,W,E e R
 void ADoctor::Cura() {
-
 }
 
 void ADoctor::Bomba() {
