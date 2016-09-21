@@ -5,6 +5,8 @@
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "CuraPower.h"
+#include "NitrogenioPower.h"
+#include "QuimicaPower.h"
 #include "ProjectileActor.h"
 
 
@@ -179,7 +181,7 @@ void ADoctor::Quimico() {
 		UWorld* World = GetWorld();
 		if (World != nullptr) {
 			FRotator Rotation = RootComponent->GetComponentRotation();
-			Proj = World->SpawnActor<ACuraPower>(GetActorLocation(), Rotation, SpawnParameters);
+			AQuimicaPower* Proj = World->SpawnActor<AQuimicaPower>(GetActorLocation(), Rotation, SpawnParameters);
 			if (Proj != nullptr) {
 				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
 			}
@@ -194,7 +196,7 @@ void ADoctor::Nitrogenio() {
 		UWorld* World = GetWorld();
 		if (World != nullptr) {
 			FRotator Rotation = RootComponent->GetComponentRotation();
-			Proj = World->SpawnActor<ACuraPower>(GetActorLocation(), Rotation, SpawnParameters);
+			ANitrogenioPower * Proj = World->SpawnActor<ANitrogenioPower>(GetActorLocation(), Rotation, SpawnParameters);
 			if (Proj != nullptr) {
 				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
 			}
