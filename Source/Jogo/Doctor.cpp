@@ -8,6 +8,7 @@
 #include "NitrogenioPower.h"
 #include "QuimicaPower.h"
 #include "ProjectileActor.h"
+#include "InimigoPequeno.h"
 
 
 // Sets default values
@@ -54,15 +55,26 @@ ADoctor::ADoctor()
 	
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
-	/*
-	ArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComp"));
-	ArrowComp->SetHiddenInGame(true);
-	ArrowComp->ArrowSize = 2.0f;
-	ArrowComp->AttachTo(RootComponent);
-	*/
+	
 	Life = 3000;
 	Power = 0;
-	
+
+	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollectCollision"));
+	CollisionComp->InitSphereRadius(200.0f);
+	CollisionComp->AttachTo(RootComponent);
+
+	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>
+		(TEXT("NitrogenioPart"));
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>
+		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Poison_Shatter_01.P_Aura_Poison_Shatter_01'"));
+
+	if (ParticleSystem.Succeeded()) {
+		NitrogenioPart->SetTemplate(ParticleSystem.Object);
+	}
+	NitrogenioPart->SetupAttachment(CollisionComp);
+
+	NitrogenioPart->bAutoActivate = false;
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
@@ -71,7 +83,7 @@ ADoctor::ADoctor()
 void ADoctor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	StartPlayer = FVector(-1580.0f,-40.0f,108.0f);
 }
 
 // Called every frame
@@ -115,9 +127,9 @@ int ADoctor::GetLife() {
 
 void ADoctor::OnDeath() {
 	if (Life <= 0) {
-		FVector InitialLocation(StartPlayer);
+		
 		Life = 3000;
-		SetActorLocation(InitialLocation);
+		SetActorLocation(StartPlayer);
 	}
 }
 
@@ -156,8 +168,10 @@ void ADoctor::Cura() {
 				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
 			}
 		}
-		if(Life+120 < 3000)
-		Life = Life + 120;
+
+
+		if (Life + 120 < 3000)
+			Life = Life + 120;
 	}
 }
 
@@ -190,19 +204,20 @@ void ADoctor::Quimico() {
 	//}
 }
 void ADoctor::Nitrogenio() {
-	//if(SuperPower)
-	//if (Proj == nullptr) {
-		FActorSpawnParameters SpawnParameters;
-		UWorld* World = GetWorld();
-		if (World != nullptr) {
-			FRotator Rotation = RootComponent->GetComponentRotation();
-			ANitrogenioPower * Proj = World->SpawnActor<ANitrogenioPower>(GetActorLocation(), Rotation, SpawnParameters);
-			if (Proj != nullptr) {
-				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
-			}
+
+	TArray<AActor*> Colidido;
+	CollisionComp->GetOverlappingActors(Colidido);
+
+	NitrogenioPart->ToggleActive();
+
+	for (int i = 0; i < Colidido.Num(); i++) {
+		if (Colidido[i]->IsA(AInimigoPequeno::StaticClass())) {
+			AInimigoPequeno* InimigoPequeno = Cast<AInimigoPequeno>(Colidido[i]);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+			InimigoPequeno->InimigoPeqDeath();
+			UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}
-
-	//}
-
+		
+	}
 }
 

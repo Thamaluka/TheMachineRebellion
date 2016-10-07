@@ -69,3 +69,6 @@ void AProjectileActor::Tick( float DeltaTime )
 	SetActorLocation(Location);
 }
 
+void AProjectileActor::DestroyProjectile() {
+	Destroy();
+}

@@ -28,8 +28,9 @@ ANitrogenioPower::ANitrogenioPower()
 	Particle = CreateDefaultSubobject<UParticleSystemComponent>
 		(TEXT("Particle"));
 	Particle->bAutoActivate = true;
+
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>
-		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Mobile/ICE/combat/P_Moving_Spin_Ice_02.P_Moving_Spin_Ice_02'"));
+		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Poison_Shatter_01.P_Aura_Poison_Shatter_01'"));
 
 	if (ParticleSystem.Succeeded()) {
 		Particle->SetTemplate(ParticleSystem.Object);
@@ -49,15 +50,13 @@ ANitrogenioPower::ANitrogenioPower()
 void ANitrogenioPower::BeginPlay()
 {
 	Super::BeginPlay();
-	DefaultZ = GetActorLocation().Z;
+
 }
 
 // Called every frame
 void ANitrogenioPower::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	FVector Location = GetActorLocation();
-	Location.Z = DefaultZ;
-	SetActorLocation(Location);
+	
 }
 
