@@ -61,6 +61,7 @@ void AInimigoPequeno::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
 
 		Doctor->SetLife(Doctor->GetLife()- DamageAmount);
 		Doctor->OnDeath();
+		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), InimigoPeqLife);
 	}
 
 }
@@ -73,6 +74,6 @@ void AInimigoPequeno::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 		Projectile->DestroyProjectile();	
 		InimigoPeqDeath();
 
-		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), InimigoPeqLife);
+		
 	}
 }

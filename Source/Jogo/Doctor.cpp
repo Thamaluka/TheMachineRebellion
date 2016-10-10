@@ -65,6 +65,8 @@ ADoctor::ADoctor()
 	if (ParticleSystem.Succeeded()) {
 		NitrogenioPart->SetTemplate(ParticleSystem.Object);
 	}
+	NitrogenioPart->SetupAttachment(CollisionComp);
+	NitrogenioPart->bAutoActivate = false;
 
 
 	QuimicoPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("QuimicoPart"));
@@ -82,6 +84,7 @@ ADoctor::ADoctor()
 	}
 	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->bAutoActivate = false;
+	CuraPart->bAutoDestroy = true;
 
 
 
@@ -200,8 +203,7 @@ void ADoctor::Quimico() {
 
 
 void ADoctor::Nitrogenio() {
-	NitrogenioPart->SetupAttachment(CollisionComp);
-	NitrogenioPart->bAutoActivate = false;
+
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 	NitrogenioPart->ToggleActive();

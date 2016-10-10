@@ -67,6 +67,7 @@ private:
 
 	FVector StartPlayer;
 	TArray<class AInimigoPequeno*>Inventory;
+
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* NitrogenioPart;
 		UPROPERTY(EditAnywhere)
