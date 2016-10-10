@@ -40,7 +40,6 @@ public:
 	void Quimico();
 	void Nitrogenio();
 
-	FORCEINLINE TArray<class AInimigoPequeno*> GetInventory() const { return Inventory; }
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -55,8 +54,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		UArrowComponent* ArrowComp;
 
-	UPROPERTY(EditAnywhere)
-		class ACuraPower* Proj;
 
 	UPROPERTY(EditAnywhere)
 	USphereComponent* CollisionComp;
@@ -66,7 +63,7 @@ private:
 	UParticleSystemComponent* Particle;
 
 	FVector StartPlayer;
-	TArray<class AInimigoPequeno*>Inventory;
+
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* NitrogenioPart;

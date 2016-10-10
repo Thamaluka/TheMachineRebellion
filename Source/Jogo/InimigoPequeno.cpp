@@ -22,6 +22,8 @@ AInimigoPequeno::AInimigoPequeno()
 	MeshComp->SetCollisionProfileName("BlockAll");
 	MeshComp->AttachTo(RootComponent);
 
+
+
 	MeshComp->OnComponentHit.AddDynamic(this, &AInimigoPequeno::OnHit);
 
 }

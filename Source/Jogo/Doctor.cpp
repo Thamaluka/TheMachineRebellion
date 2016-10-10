@@ -5,7 +5,7 @@
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "ProjectileActor.h"
-#include "InimigoPequeno.h"
+#include "InimigoBot.h"
 
 
 // Sets default values
@@ -193,8 +193,8 @@ void ADoctor::Quimico() {
 	CollisionComp->GetOverlappingActors(Colidido);
 	QuimicoPart->ToggleActive();
 	for (int i = 0; i < Colidido.Num(); i++) {
-		if (Colidido[i]->IsA(AInimigoPequeno::StaticClass())) {
-			AInimigoPequeno* InimigoPequeno = Cast<AInimigoPequeno>(Colidido[i]);
+		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
+			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-100);
 			InimigoPequeno->InimigoPeqDeath();
 		}
@@ -208,8 +208,8 @@ void ADoctor::Nitrogenio() {
 	CollisionComp->GetOverlappingActors(Colidido);
 	NitrogenioPart->ToggleActive();
 	for (int i = 0; i < Colidido.Num(); i++) {
-		if (Colidido[i]->IsA(AInimigoPequeno::StaticClass())) {
-			AInimigoPequeno* InimigoPequeno = Cast<AInimigoPequeno>(Colidido[i]);
+		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
+			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
 			InimigoPequeno->InimigoPeqDeath();
 			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
