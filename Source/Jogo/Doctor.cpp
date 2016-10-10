@@ -4,9 +4,6 @@
 #include "Doctor.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
-#include "CuraPower.h"
-#include "NitrogenioPower.h"
-#include "QuimicaPower.h"
 #include "ProjectileActor.h"
 #include "InimigoPequeno.h"
 
@@ -21,8 +18,8 @@ ADoctor::ADoctor()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	
-	GetCharacterMovement()->bOrientRotationToMovement = true; 
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
@@ -32,14 +29,14 @@ ADoctor::ADoctor()
 	CameraBoom->bAbsoluteRotation = true;
 	CameraBoom->TargetArmLength = 800.f;
 	CameraBoom->RelativeRotation = FRotator(-60.f, 0.f, 0.f);
-	CameraBoom->bDoCollisionTest = false; 
+	CameraBoom->bDoCollisionTest = false;
 
-										
+
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	TopDownCameraComponent->bUsePawnControlRotation = false; 
+	TopDownCameraComponent->bUsePawnControlRotation = false;
 
-															
+
 	CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
 	CursorToWorld->SetupAttachment(RootComponent);
 	/*
@@ -52,10 +49,10 @@ ADoctor::ADoctor()
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 
-	
+
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
-	
+
 	Life = 3000;
 	Power = 0;
 
@@ -63,18 +60,26 @@ ADoctor::ADoctor()
 	CollisionComp->InitSphereRadius(200.0f);
 	CollisionComp->AttachTo(RootComponent);
 
-	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>
-		(TEXT("NitrogenioPart"));
-
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>
-		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Poison_Shatter_01.P_Aura_Poison_Shatter_01'"));
-
+	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("NitrogenioPart"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_AuraCircle_Ice_Vortex_01.P_AuraCircle_Ice_Vortex_01'"));
 	if (ParticleSystem.Succeeded()) {
 		NitrogenioPart->SetTemplate(ParticleSystem.Object);
 	}
-	NitrogenioPart->SetupAttachment(CollisionComp);
 
-	NitrogenioPart->bAutoActivate = false;
+
+	QuimicoPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("QuimicoPart"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Poison_Shatter_01.P_Aura_Poison_Shatter_01'"));
+	if (ParticleSys.Succeeded()) {
+		QuimicoPart->SetTemplate(ParticleSys.Object);
+	}
+
+
+	CuraPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("CuraPart"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_AuraCircle_Ice_Vortex_01.P_AuraCircle_Ice_Vortex_01'"));
+	if (Particle.Succeeded()) {
+		CuraPart->SetTemplate(Particle.Object);
+	}
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
@@ -127,13 +132,10 @@ int ADoctor::GetLife() {
 
 void ADoctor::OnDeath() {
 	if (Life <= 0) {
-		
 		Life = 3000;
 		SetActorLocation(StartPlayer);
 	}
 }
-
-
 
 
 //Energia
@@ -153,26 +155,15 @@ int ADoctor::GetPower() {
 	return Power;
 }
 
-
-
-
 //Poderes pelas teclas Q,W,E e R
 void ADoctor::Cura() {
-	if (Proj == nullptr) {
-		FActorSpawnParameters SpawnParameters;
-		UWorld* World = GetWorld();
-		if (World != nullptr) {
-			FRotator Rotation = RootComponent->GetComponentRotation();
-			Proj = World->SpawnActor<ACuraPower>(GetActorLocation(), Rotation, SpawnParameters);
-			if (Proj != nullptr) {
-				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
-			}
+	CuraPart->SetupAttachment(CollisionComp);
+	CuraPart->ToggleActive();
+		if (Life + 120 < 3000){
+						Life = Life + 120;
 		}
 
-
-		if (Life + 120 < 3000)
-			Life = Life + 120;
-	}
+		UE_LOG(LogTemp, Warning, TEXT("Cura"));
 }
 
 void ADoctor::Bomba() {
@@ -189,35 +180,34 @@ void ADoctor::Bomba() {
 	}
 
 }
-void ADoctor::Quimico() {
-	//if (Proj == nullptr) {
-		FActorSpawnParameters SpawnParameters;
-		UWorld* World = GetWorld();
-		if (World != nullptr) {
-			FRotator Rotation = RootComponent->GetComponentRotation();
-			AQuimicaPower* Proj = World->SpawnActor<AQuimicaPower>(GetActorLocation(), Rotation, SpawnParameters);
-			if (Proj != nullptr) {
-				//UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
-			}
-		}
-		
-	//}
-}
-void ADoctor::Nitrogenio() {
 
+void ADoctor::Quimico() {
+
+	QuimicoPart->SetupAttachment(CollisionComp);
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
+	QuimicoPart->ToggleActive();
+	for (int i = 0; i < Colidido.Num(); i++) {
+		if (Colidido[i]->IsA(AInimigoPequeno::StaticClass())) {
+			AInimigoPequeno* InimigoPequeno = Cast<AInimigoPequeno>(Colidido[i]);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-100);
+			InimigoPequeno->InimigoPeqDeath();
+		}
+	}
+}
 
+
+void ADoctor::Nitrogenio() {
+	NitrogenioPart->SetupAttachment(CollisionComp);
+	TArray<AActor*> Colidido;
+	CollisionComp->GetOverlappingActors(Colidido);
 	NitrogenioPart->ToggleActive();
-
 	for (int i = 0; i < Colidido.Num(); i++) {
 		if (Colidido[i]->IsA(AInimigoPequeno::StaticClass())) {
 			AInimigoPequeno* InimigoPequeno = Cast<AInimigoPequeno>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
 			InimigoPequeno->InimigoPeqDeath();
-			UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}
-		
 	}
 }
-
