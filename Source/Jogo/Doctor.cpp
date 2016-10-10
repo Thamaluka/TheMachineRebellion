@@ -61,7 +61,7 @@ ADoctor::ADoctor()
 	CollisionComp->AttachTo(RootComponent);
 
 	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("NitrogenioPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_AuraCircle_Ice_Vortex_01.P_AuraCircle_Ice_Vortex_01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_FrostGiant/ICE/P_ArmBuildUp01.P_ArmBuildUp01'"));
 	if (ParticleSystem.Succeeded()) {
 		NitrogenioPart->SetTemplate(ParticleSystem.Object);
 	}
@@ -72,13 +72,18 @@ ADoctor::ADoctor()
 	if (ParticleSys.Succeeded()) {
 		QuimicoPart->SetTemplate(ParticleSys.Object);
 	}
-
+	QuimicoPart->SetupAttachment(CollisionComp);
+	QuimicoPart->bAutoActivate = false;
 
 	CuraPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("CuraPart"));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_AuraCircle_Ice_Vortex_01.P_AuraCircle_Ice_Vortex_01'"));
 	if (Particle.Succeeded()) {
 		CuraPart->SetTemplate(Particle.Object);
 	}
+	CuraPart->SetupAttachment(CollisionComp);
+	CuraPart->bAutoActivate = false;
+
+
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -157,7 +162,6 @@ int ADoctor::GetPower() {
 
 //Poderes pelas teclas Q,W,E e R
 void ADoctor::Cura() {
-	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->ToggleActive();
 		if (Life + 120 < 3000){
 						Life = Life + 120;
@@ -182,8 +186,6 @@ void ADoctor::Bomba() {
 }
 
 void ADoctor::Quimico() {
-
-	QuimicoPart->SetupAttachment(CollisionComp);
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 	QuimicoPart->ToggleActive();
@@ -199,6 +201,7 @@ void ADoctor::Quimico() {
 
 void ADoctor::Nitrogenio() {
 	NitrogenioPart->SetupAttachment(CollisionComp);
+	NitrogenioPart->bAutoActivate = false;
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 	NitrogenioPart->ToggleActive();

@@ -14,16 +14,16 @@ public:
 	// Sets default values for this character's properties
 	ADoctor();
 
-	
+
 	virtual void BeginPlay() override;
-	
-	
+
+
 	virtual void Tick( float DeltaSeconds ) override;
 
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
+
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
@@ -42,7 +42,7 @@ public:
 
 	FORCEINLINE TArray<class AInimigoPequeno*> GetInventory() const { return Inventory; }
 private:
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* TopDownCameraComponent;
 
@@ -61,13 +61,17 @@ private:
 	UPROPERTY(EditAnywhere)
 	USphereComponent* CollisionComp;
 
+
+	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* Particle;
 
 	FVector StartPlayer;
 	TArray<class AInimigoPequeno*>Inventory;
-
+	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* NitrogenioPart;
+		UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* QuimicoPart;
+		UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* CuraPart;
 
 	int Life;
