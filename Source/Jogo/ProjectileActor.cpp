@@ -11,7 +11,7 @@ AProjectileActor::AProjectileActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Root = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
-	Root->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+	Root->SetWorldScale3D(FVector(5.0f, 5.0f, 5.0f));
 	RootComponent = Root;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
@@ -35,7 +35,7 @@ AProjectileActor::AProjectileActor()
 		(TEXT("Particle"));
 	Particle->bAutoActivate = true;
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>
-		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Mobile/Fire/P_Beam_Laser_FireAttack.P_Beam_Laser_FireAttack'"));
+		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/Fire/P_Beam_Laser_Fire_Large.P_Beam_Laser_Fire_Large'"));
 	if (ParticleSystem.Succeeded()) {
 		Particle->SetTemplate(ParticleSystem.Object);
 	}
@@ -47,7 +47,7 @@ AProjectileActor::AProjectileActor()
 	ProjectileMovement->InitialSpeed = 3000.0f;
 	ProjectileMovement->MaxSpeed = 3000.0f;
 
-	InitialLifeSpan = 5.0f;
+	InitialLifeSpan = 15.0f;
 
 }
 
