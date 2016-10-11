@@ -12,15 +12,22 @@ AInimigoBot::AInimigoBot()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCollisionProfileName("BlockAll");
 	MeshComp->AttachTo(RootComponent);
 
+	ConstructorHelpers::FObjectFinder<USkeletalMesh>
+		SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/SPIDBOT1.SPIDBOT1'"));
+	if (SkeletalMesh.Succeeded()) {
+		GetMesh()->SetSkeletalMesh(SkeletalMesh.Object);
+	}
+	GetMesh()->SetWorldLocation(FVector(-310.0f, -180.0f, -80.0f));
+	GetMesh()->SetWorldScale3D(FVector(0.9f, 0.9f, 0.9f));
 
-	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
-	MeshComp->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
+	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
+	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
 
 }
 
@@ -28,7 +35,7 @@ AInimigoBot::AInimigoBot()
 void AInimigoBot::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

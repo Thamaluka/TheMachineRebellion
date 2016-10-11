@@ -39,13 +39,13 @@ ADoctor::ADoctor()
 
 	CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
 	CursorToWorld->SetupAttachment(RootComponent);
-	/*
-	static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/TopDownCPP/Blueprints/M_Cursor_Decal.M_Cursor_Decal'"));
+
+	static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/StarterContent/Materials/NewMaterial.NewMaterial'"));
 	if (DecalMaterialAsset.Succeeded())
 	{
 		CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
 	}
-	*/
+
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 

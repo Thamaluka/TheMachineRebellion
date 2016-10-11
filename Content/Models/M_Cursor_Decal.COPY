@@ -1,0 +1,58 @@
+Begin Object Class=Material Name="M_Cursor_Decal"
+   Begin Object Class=MaterialExpressionComponentMask Name="MaterialExpressionComponentMask_0"
+   End Object
+   Begin Object Class=MaterialExpressionConstant3Vector Name="MaterialExpressionConstant3Vector_0"
+   End Object
+   Begin Object Class=MaterialExpressionMultiply Name="MaterialExpressionMultiply_0"
+   End Object
+   Begin Object Class=MaterialExpressionTextureSample Name="MaterialExpressionTextureSample_1"
+   End Object
+   Begin Object Class=SceneThumbnailInfoWithPrimitive Name="SceneThumbnailInfoWithPrimitive_0"
+   End Object
+   Begin Object Name="MaterialExpressionComponentMask_0"
+      Input=(Expression=MaterialExpressionTextureSample'M_Cursor_Decal:MaterialExpressionTextureSample_1',Mask=1,MaskR=1,MaskG=1,MaskB=1)
+      G=True
+      MaterialExpressionEditorX=-416
+      MaterialExpressionEditorY=16
+      MaterialExpressionGuid=B2731CE647E7A6AD20A9139467A464DC
+      Material=Material'M_Cursor_Decal'
+      bCollapsed=False
+   End Object
+   Begin Object Name="MaterialExpressionConstant3Vector_0"
+      Constant=(R=0.000000,G=1.000000,B=0.000000,A=0.000000)
+      MaterialExpressionEditorX=-512
+      MaterialExpressionEditorY=224
+      MaterialExpressionGuid=71DC0ECC4BB74C529F9C8AA8AEABDF81
+      Material=Material'M_Cursor_Decal'
+   End Object
+   Begin Object Name="MaterialExpressionMultiply_0"
+      A=(Expression=MaterialExpressionComponentMask'M_Cursor_Decal:MaterialExpressionComponentMask_0')
+      B=(Expression=MaterialExpressionConstant3Vector'M_Cursor_Decal:MaterialExpressionConstant3Vector_0')
+      MaterialExpressionEditorX=-224
+      MaterialExpressionEditorY=176
+      MaterialExpressionGuid=2D6433314B59F5E3DDFA2385D8A773F0
+      Material=Material'M_Cursor_Decal'
+   End Object
+   Begin Object Name="MaterialExpressionTextureSample_1"
+      Texture=Texture2D'/Engine/MobileResources/HUD/AnalogHat.AnalogHat'
+      MaterialExpressionEditorX=-608
+      MaterialExpressionEditorY=-176
+      MaterialExpressionGuid=345E41674E67A5CCCD9B55B3D38A3921
+      Material=Material'M_Cursor_Decal'
+   End Object
+   Begin Object Name="SceneThumbnailInfoWithPrimitive_0"
+   End Object
+   EmissiveColor=(Expression=MaterialExpressionMultiply'MaterialExpressionMultiply_0')
+   Opacity=(Expression=MaterialExpressionComponentMask'MaterialExpressionComponentMask_0')
+   MaterialDomain=MD_DeferredDecal
+   DecalBlendMode=DBM_Emissive
+   Expressions(0)=MaterialExpressionTextureSample'MaterialExpressionTextureSample_1'
+   Expressions(1)=MaterialExpressionComponentMask'MaterialExpressionComponentMask_0'
+   Expressions(2)=MaterialExpressionMultiply'MaterialExpressionMultiply_0'
+   Expressions(3)=MaterialExpressionConstant3Vector'MaterialExpressionConstant3Vector_0'
+   bCanMaskedBeAssumedOpaque=True
+   StateId=7FC068254BDA22B02E9F7F8B33D368D4
+   ReferencedTextureGuids(0)=1C7E1EF54D9487F4BA931CBD666A57A0
+   ThumbnailInfo=SceneThumbnailInfoWithPrimitive'SceneThumbnailInfoWithPrimitive_0'
+   LightingGuid=5C523DDD4B60BCFC2B5F0E82000FED9D
+End Object
