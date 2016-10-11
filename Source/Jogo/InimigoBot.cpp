@@ -14,20 +14,15 @@ AInimigoBot::AInimigoBot()
 
 
 
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	MeshComp->SetCollisionProfileName("BlockAll");
-	MeshComp->AttachTo(RootComponent);
-
-	ConstructorHelpers::FObjectFinder<USkeletalMesh>
-		SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/SPIDBOT1.SPIDBOT1'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh>SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/SPIDBOT1.SPIDBOT1'"));
 	if (SkeletalMesh.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(SkeletalMesh.Object);
 	}
 	GetMesh()->SetWorldLocation(FVector(-310.0f, -180.0f, -80.0f));
 	GetMesh()->SetWorldScale3D(FVector(0.9f, 0.9f, 0.9f));
 
-	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
-	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
 
 }
 

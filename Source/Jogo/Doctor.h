@@ -39,6 +39,7 @@ public:
 	void Bomba();
 	void Quimico();
 	void Nitrogenio();
+	void OnBottom();
 
 private:
 

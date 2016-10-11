@@ -6,6 +6,7 @@
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "ProjectileActor.h"
 #include "InimigoBot.h"
+#include "Bottom.h"
 
 
 // Sets default values
@@ -40,13 +41,13 @@ ADoctor::ADoctor()
 	CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
 	CursorToWorld->SetupAttachment(RootComponent);
 
-	static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/StarterContent/Materials/NewMaterial.NewMaterial'"));
+	static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/Models/M_Cursor_Decal.M_Cursor_Decal'"));
 	if (DecalMaterialAsset.Succeeded())
 	{
 		CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
 	}
 
-	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
+	CursorToWorld->DecalSize = FVector(32.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 
 
@@ -61,7 +62,7 @@ ADoctor::ADoctor()
 	CollisionComp->AttachTo(RootComponent);
 
 	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("NitrogenioPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_FrostGiant/ICE/P_ArmBuildUp01.P_ArmBuildUp01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Ice_Shatter_01.P_Aura_Ice_Shatter_01'"));
 	if (ParticleSystem.Succeeded()) {
 		NitrogenioPart->SetTemplate(ParticleSystem.Object);
 	}
@@ -78,13 +79,13 @@ ADoctor::ADoctor()
 	QuimicoPart->bAutoActivate = false;
 
 	CuraPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("CuraPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_AuraCircle_Ice_Vortex_01.P_AuraCircle_Ice_Vortex_01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Archive/P_HealthOrb_Pickup.P_HealthOrb_Pickup'"));
 	if (Particle.Succeeded()) {
 		CuraPart->SetTemplate(Particle.Object);
 	}
 	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->bAutoActivate = false;
-	CuraPart->bAutoDestroy = true;
+	
 
 
 
@@ -96,7 +97,7 @@ ADoctor::ADoctor()
 void ADoctor::BeginPlay()
 {
 	Super::BeginPlay();
-	StartPlayer = FVector(-1580.0f,-40.0f,108.0f);
+	StartPlayer = FVector(2244.0f,6175.0f,110.0f);
 }
 
 // Called every frame
@@ -126,6 +127,7 @@ void ADoctor::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	InputComponent->BindAction("Bomba", IE_Pressed, this, &ADoctor::Bomba);
 	InputComponent->BindAction("Quimico", IE_Pressed, this, &ADoctor::Quimico);
 	InputComponent->BindAction("Nitrogenio", IE_Pressed, this, &ADoctor::Nitrogenio);
+	InputComponent->BindAction("Porta", IE_Pressed, this, &ADoctor::OnBottom);
 
 }
 
@@ -215,4 +217,19 @@ void ADoctor::Nitrogenio() {
 			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}
 	}
+}
+
+//Colisao com o botao para abertura do laser
+void ADoctor::OnBottom() {
+	TArray<AActor*>AtoresColetaveis;
+	CollisionComp->GetOverlappingActors(AtoresColetaveis);
+
+	for (int i = 0; i < AtoresColetaveis.Num(); i++) {
+		 if (AtoresColetaveis[i]->IsA(ABottom::StaticClass())) {
+			ABottom* Botao = Cast<ABottom>(AtoresColetaveis[i]);
+			Botao->OnPressed();
+
+		}
+	}
+
 }
