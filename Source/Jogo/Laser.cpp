@@ -2,6 +2,7 @@
 
 #include "Jogo.h"
 #include "Laser.h"
+#include "Doctor.h"
 
 
 // Sets default values
@@ -11,12 +12,22 @@ ALaser::ALaser()
 	PrimaryActorTick.bCanEverTick = true;
 
 
-	Door = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshDoor(TEXT("StaticMesh'/Game/StarterContent/Props/SM_Door.SM_Door'"));
-	if (MeshDoor.Succeeded()) {
-		Door->SetStaticMesh(MeshDoor.Object);
+	Laser = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Laser"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshLaser(TEXT("StaticMesh'/Game/StarterContent/Architecture/Pillar_50x500.Pillar_50x500'"));
+	if (MeshLaser.Succeeded()) {
+		Laser->SetStaticMesh(MeshLaser.Object);
 	}
-	RootComponent = Door;
+	Laser->SetRelativeScale3D(FVector(1.0f,1.0f,1.0f));
+
+	Laser->OnComponentHit.AddDynamic(this, &ALaser::OnHit);
+	Laser->OnComponentBeginOverlap.AddDynamic(this, &ALaser::OnOverlapBegin);
+	
+
+	ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/InfinityBladeEffects/LightsPavement.LightsPavement'"));
+	if (Material.Succeeded()) {
+		Laser->SetMaterial(0, Material.Object);
+	}
+	RootComponent = Laser;
 
 }
 
@@ -24,7 +35,7 @@ ALaser::ALaser()
 void ALaser::BeginPlay()
 {
 	Super::BeginPlay();
-	StartYaw = Door->GetComponentRotation().Yaw + 180.0f;
+	
 }
 
 // Called every frame
@@ -32,15 +43,40 @@ void ALaser::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	FRotator Rotation = Door->GetComponentRotation();
+	FVector Scale = Laser->GetComponentScale();
 
-	if (Open && (Rotation.Yaw + 180.f) + 1.0f< (StartYaw + 90.0f)) {
-		Rotation.Yaw += 1.0f;
+	if (Open && Scale.Z>=0) {
+		Scale.Z -= 0.3f;
+		Laser->SetCollisionProfileName("NoCollision");
 	}
-	else if (!Open && (Rotation.Yaw + 180.0f) - 1.0f >= StartYaw) {
-		Rotation.Yaw -= 1.0f;
+	else if (!Open && Scale.Z<5.0f) {
+		Scale.Z += 0.3f;
+		Laser->SetCollisionProfileName("BlockAllDynamic");
 	}
-	Door->SetWorldRotation(Rotation);
+	
+	Laser->SetWorldScale3D(Scale);
+
 
 }
 
+void ALaser::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit) {
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
+
+		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
+		Doctor->SetLife(Doctor->GetLife() - 50);
+		Doctor->OnDeath();
+		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Doctor->GetLife());
+	}
+
+}
+
+void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if ((OtherActor != nullptr) && (OtherActor != this) &&
+		(OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
+	
+		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
+		Doctor->SetLife(Doctor->GetLife() - 50);
+		Doctor->OnDeath();
+		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Doctor->GetLife());
+	}
+}

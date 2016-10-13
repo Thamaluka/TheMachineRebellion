@@ -20,6 +20,7 @@ AInimigoBot::AInimigoBot()
 	}
 	GetMesh()->SetWorldLocation(FVector(-310.0f, -180.0f, -80.0f));
 	GetMesh()->SetWorldScale3D(FVector(0.9f, 0.9f, 0.9f));
+	
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);

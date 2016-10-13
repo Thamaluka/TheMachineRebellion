@@ -20,15 +20,19 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	FORCEINLINE UStaticMeshComponent*GetDoor() const { return Door; }
+	FORCEINLINE UStaticMeshComponent*GetLaser() const { return Laser; }
 	FORCEINLINE bool IsOpen()const { return Open; }
 	FORCEINLINE void ALaser::SetOpen(bool NewOpen) { Open = NewOpen; }
 	
 private:
-	UStaticMeshComponent*Door;
+	UStaticMeshComponent*Laser;
 	float StartYaw;
 	bool Open;
 
-	
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit);
+
+	UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 };
