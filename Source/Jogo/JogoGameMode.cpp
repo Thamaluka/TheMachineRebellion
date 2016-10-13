@@ -4,11 +4,11 @@
 #include "JogoGameMode.h"
 #include "MyPlayerController.h"
 #include "Doctor.h"
+#include "Cyborg.h"
 
 AJogoGameMode::AJogoGameMode() {
 	PlayerControllerClass = AMyPlayerController::StaticClass();
-		DefaultPawnClass = ADoctor::StaticClass();
-	
+		//DefaultPawnClass = ADoctor::StaticClass();
+		DefaultPawnClass = ACyborg::StaticClass();
+
 }
-
-
