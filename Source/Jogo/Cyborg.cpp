@@ -49,6 +49,8 @@ ACyborg::ACyborg()
 	CollisionComp->InitSphereRadius(200.0f);
 	CollisionComp->AttachTo(RootComponent);
 
+	
+
 	EscudoPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EscudoPart"));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Ice_Shatter_01.P_Aura_Ice_Shatter_01'"));
 	if (ParticleSystem.Succeeded()) {
@@ -75,6 +77,7 @@ ACyborg::ACyborg()
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
 
@@ -107,6 +110,7 @@ void ACyborg::Tick( float DeltaTime )
 void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
+	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
 
 }
 
@@ -153,7 +157,7 @@ void ACyborg::Energy(){
 	CollisionComp->GetOverlappingActors(Colidido);
 	EnergyPart->ToggleActive();
 	for (int i = 0; i < Colidido.Num(); i++) {
-		if (Colidido[i]->IsA(ACyborg::StaticClass())) {
+		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
 			InimigoPequeno->InimigoPeqDeath();

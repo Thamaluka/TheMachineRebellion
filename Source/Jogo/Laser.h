@@ -25,6 +25,7 @@ public:
 	FORCEINLINE void ALaser::SetOpen(bool NewOpen) { Open = NewOpen; }
 
 private:
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent*Laser;
 	bool Open;
 

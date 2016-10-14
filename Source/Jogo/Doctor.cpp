@@ -89,7 +89,7 @@ ADoctor::ADoctor()
 
 
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
 
@@ -123,11 +123,11 @@ void ADoctor::Tick( float DeltaTime )
 void ADoctor::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
-	InputComponent->BindAction("Cura", IE_Pressed, this, &ADoctor::Cura);
-	InputComponent->BindAction("Bomba", IE_Pressed, this, &ADoctor::Bomba);
-	InputComponent->BindAction("Quimico", IE_Pressed, this, &ADoctor::Quimico);
-	InputComponent->BindAction("Nitrogenio", IE_Pressed, this, &ADoctor::Nitrogenio);
-	InputComponent->BindAction("Porta", IE_Pressed, this, &ADoctor::OnBottom);
+	InputComponent->BindAction("PowerQ", IE_Pressed, this, &ADoctor::Cura);
+	InputComponent->BindAction("PowerW", IE_Pressed, this, &ADoctor::Bomba);
+	InputComponent->BindAction("PowerE", IE_Pressed, this, &ADoctor::Quimico);
+	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ADoctor::Nitrogenio);
+	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ADoctor::OnBottom);
 
 }
 

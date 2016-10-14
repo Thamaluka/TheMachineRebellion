@@ -17,7 +17,7 @@ ALaser::ALaser()
 	if (MeshLaser.Succeeded()) {
 		Laser->SetStaticMesh(MeshLaser.Object);
 	}
-	Laser->SetRelativeScale3D(FVector(1.0f,1.0f,1.0f));
+	Laser->SetWorldScale3D(FVector(1.0f,1.0f,1.0f));
 
 	Laser->OnComponentHit.AddDynamic(this, &ALaser::OnHit);
 	Laser->OnComponentBeginOverlap.AddDynamic(this, &ALaser::OnOverlapBegin);
