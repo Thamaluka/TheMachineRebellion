@@ -8,7 +8,7 @@
 
 AJogoGameMode::AJogoGameMode() {
 	PlayerControllerClass = AMyPlayerController::StaticClass();
-		//DefaultPawnClass = ADoctor::StaticClass();
-		DefaultPawnClass = ACyborg::StaticClass();
+		DefaultPawnClass = ADoctor::StaticClass();
+	//	DefaultPawnClass = ACyborg::StaticClass();
 
 }

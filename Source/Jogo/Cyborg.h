@@ -16,7 +16,7 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
@@ -25,6 +25,17 @@ public:
 
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+	void SetLife(int NewLife);
+	int GetLife();
+
+	void OnDeath();
+
+	void SetPower(int NewPower);
+	int GetPower();
+
+	void Escudo();
+	void Energy();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -35,6 +46,20 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
-	
-	
+
+		FVector StartPlayer;
+
+		UPROPERTY(EditAnywhere)
+		UParticleSystemComponent* EscudoPart;
+		UPROPERTY(EditAnywhere)
+		UParticleSystemComponent* EnergyPart;
+
+		UPROPERTY(EditAnywhere)
+		USphereComponent* CollisionComp;
+
+
+		int Life;
+		int Power;
+		bool SuperPower;
+
 };

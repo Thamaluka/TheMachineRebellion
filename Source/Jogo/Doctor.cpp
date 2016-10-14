@@ -85,7 +85,7 @@ ADoctor::ADoctor()
 	}
 	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->bAutoActivate = false;
-	
+
 
 
 
@@ -172,7 +172,6 @@ void ADoctor::Cura() {
 						Life = Life + 120;
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("Cura"));
 }
 
 void ADoctor::Bomba() {

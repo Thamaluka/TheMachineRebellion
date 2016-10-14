@@ -55,22 +55,18 @@ private:
 	UPROPERTY(EditAnywhere)
 		UArrowComponent* ArrowComp;
 
-
 	UPROPERTY(EditAnywhere)
 	USphereComponent* CollisionComp;
 
+	FVector StartPlayer;
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* Particle;
-
-	FVector StartPlayer;
-
-
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* NitrogenioPart;
-		UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* QuimicoPart;
-		UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* CuraPart;
 
 	int Life;

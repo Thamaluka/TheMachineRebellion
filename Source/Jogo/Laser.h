@@ -9,24 +9,23 @@ UCLASS()
 class JOGO_API ALaser : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ALaser();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
 	FORCEINLINE UStaticMeshComponent*GetLaser() const { return Laser; }
 	FORCEINLINE bool IsOpen()const { return Open; }
 	FORCEINLINE void ALaser::SetOpen(bool NewOpen) { Open = NewOpen; }
-	
+
 private:
 	UStaticMeshComponent*Laser;
-	float StartYaw;
 	bool Open;
 
 	UFUNCTION()
@@ -34,5 +33,5 @@ private:
 
 	UFUNCTION()
 		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
+
 };

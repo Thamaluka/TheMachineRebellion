@@ -4,6 +4,7 @@
 #include "InimigoBot.h"
 #include "Doctor.h"
 #include "ProjectileActor.h"
+#include "Cyborg.h"
 
 
 // Sets default values
@@ -20,7 +21,7 @@ AInimigoBot::AInimigoBot()
 	}
 	GetMesh()->SetWorldLocation(FVector(-310.0f, -180.0f, -80.0f));
 	GetMesh()->SetWorldScale3D(FVector(0.9f, 0.9f, 0.9f));
-	
+
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
@@ -69,6 +70,11 @@ void AInimigoBot::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 		Doctor->SetLife(Doctor->GetLife() - DamageAmount);
 		Doctor->OnDeath();
 		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), InimigoPeqLife);
+
+	}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
+		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
+		Cyborg->SetLife(Cyborg->GetLife() - DamageAmount);
+		Cyborg->OnDeath();
 	}
 
 }
