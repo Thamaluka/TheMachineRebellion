@@ -21,7 +21,7 @@ ALaser::ALaser()
 
 	Laser->OnComponentHit.AddDynamic(this, &ALaser::OnHit);
 	Laser->OnComponentBeginOverlap.AddDynamic(this, &ALaser::OnOverlapBegin);
-	
+
 
 	ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/InfinityBladeEffects/LightsPavement.LightsPavement'"));
 	if (Material.Succeeded()) {
@@ -35,7 +35,7 @@ ALaser::ALaser()
 void ALaser::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -53,7 +53,7 @@ void ALaser::Tick( float DeltaTime )
 		Scale.Z += 0.3f;
 		Laser->SetCollisionProfileName("BlockAllDynamic");
 	}
-	
+
 	Laser->SetWorldScale3D(Scale);
 
 
@@ -73,7 +73,7 @@ void ALaser::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimi
 void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
 		(OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
-	
+
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - 50);
 		Doctor->OnDeath();
