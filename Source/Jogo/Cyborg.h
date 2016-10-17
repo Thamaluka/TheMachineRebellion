@@ -34,8 +34,12 @@ public:
 	void SetPower(int NewPower);
 	int GetPower();
 
+	//Poderes
 	void Escudo();
 	void Energy();
+
+	//Puzzles
+	void OnBottom();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -50,14 +54,12 @@ private:
 		FVector StartPlayer;
 
 		UPROPERTY(EditAnywhere)
-		UParticleSystemComponent* EscudoPart;
-		UPROPERTY(EditAnywhere)
 		UParticleSystemComponent* EnergyPart;
 
 		UPROPERTY(EditAnywhere)
 		USphereComponent* CollisionComp;
 
-
+	
 		int Life;
 		int Power;
 		bool SuperPower;

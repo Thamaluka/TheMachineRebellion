@@ -4,6 +4,8 @@
 #include "Cyborg.h"
 #include "InimigoBot.h"
 #include "Bottom.h"
+#include "Escudo.h"
+#include "Bottom.h"
 
 
 // Sets default values
@@ -44,25 +46,20 @@ ACyborg::ACyborg()
 	CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
 	}
 
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Cyborg(TEXT("SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
+	if (Cyborg.Succeeded()) {
+		GetMesh()->SetSkeletalMesh(Cyborg.Object);
+	}
+
 
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollectCollision"));
 	CollisionComp->InitSphereRadius(200.0f);
 	CollisionComp->AttachTo(RootComponent);
 
-	
-
-	EscudoPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EscudoPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Ice_Shatter_01.P_Aura_Ice_Shatter_01'"));
-	if (ParticleSystem.Succeeded()) {
-		EscudoPart->SetTemplate(ParticleSystem.Object);
-	}
-	EscudoPart->SetupAttachment(CollisionComp);
-	EscudoPart->bAutoActivate = false;
-
 
 	EnergyPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EnergyPart"));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Ice_Shatter_01.P_Aura_Ice_Shatter_01'"));
-	if (ParticleSystem.Succeeded()) {
+	if (ParticleSys.Succeeded()) {
 			EnergyPart->SetTemplate(ParticleSys.Object);
 		}
 	EnergyPart->SetupAttachment(CollisionComp);
@@ -110,7 +107,11 @@ void ACyborg::Tick( float DeltaTime )
 void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
+	InputComponent->BindAction("PowerQ", IE_Pressed, this, &ACyborg::Escudo);
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
+
+	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ACyborg::OnBottom);
+	
 
 }
 
@@ -149,7 +150,13 @@ int ACyborg::GetPower() {
 }
 
 void ACyborg::Escudo(){
-	EscudoPart->ToggleActive();
+	FActorSpawnParameters SpawnParameters;
+	UWorld* World = GetWorld();
+	if (World != nullptr) {
+		FRotator Rotation = RootComponent->GetComponentRotation();
+		AEscudo* Escudo = World->SpawnActor<AEscudo>(GetActorLocation(), Rotation, SpawnParameters);
+	}
+
 }
 
 void ACyborg::Energy(){
@@ -164,4 +171,19 @@ void ACyborg::Energy(){
 			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}
 	}
+}
+
+//Colisao com o botao para abertura do laser
+void ACyborg::OnBottom() {
+	TArray<AActor*>AtoresColetaveis;
+	CollisionComp->GetOverlappingActors(AtoresColetaveis);
+
+	for (int i = 0; i < AtoresColetaveis.Num(); i++) {
+		if (AtoresColetaveis[i]->IsA(ABottom::StaticClass())) {
+			ABottom* Botao = Cast<ABottom>(AtoresColetaveis[i]);
+			Botao->OnPressed();
+
+		}
+	}
+
 }
