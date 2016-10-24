@@ -169,7 +169,7 @@ int ADoctor::GetPower() {
 void ADoctor::Cura() {
 	CuraPart->ToggleActive();
 		if (Life + 120 < 3000){
-						Life = Life + 120;
+			Life = Life + 120;
 		}
 
 }
@@ -227,7 +227,6 @@ void ADoctor::OnBottom() {
 		 if (AtoresColetaveis[i]->IsA(ABottom::StaticClass())) {
 			ABottom* Botao = Cast<ABottom>(AtoresColetaveis[i]);
 			Botao->OnPressed();
-
 		}
 	}
 

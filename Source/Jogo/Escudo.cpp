@@ -16,7 +16,7 @@ AEscudo::AEscudo()
 
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>Shield(TEXT("StaticMesh'/Game/Models/barreira.barreira'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>Shield(TEXT("StaticMesh'/Game/InfinityBladeEffects/Effects/FX_Meshes/Skills/SM_Shield_Rings_02.SM_Shield_Rings_02'"));
 	if (Shield.Succeeded()) {
 		MeshComp->SetStaticMesh(Shield.Object);
 	}

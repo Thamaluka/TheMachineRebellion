@@ -23,6 +23,29 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
+	FORCEINLINE UStaticMeshComponent* GetMeshComp()const { return MeshComp; }
+
+	void SetInimigoMedLife(int NewLife);
+	int GetInimigoMedLife();
+	void InimigoMedDeath();
+	void DropArrow();
+
+private:
+	UPROPERTY(EditAnywhere)
+		UShapeComponent* Root;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* MeshComp;
+	UPROPERTY(EditAnywhere)
+		float DamageAmount = 250;
+	UPROPERTY(EditAnywhere)
+		int InimigoMedLife = 1000;
+
+	bool Tiro;
+
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit);
+	UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	
 };
