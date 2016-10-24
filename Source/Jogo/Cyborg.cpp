@@ -111,7 +111,7 @@ void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
 
 	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ACyborg::OnBottom);
-	
+
 
 }
 
