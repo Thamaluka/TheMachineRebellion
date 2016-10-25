@@ -26,6 +26,9 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	FORCEINLINE int GetId() const { return Id; }
+ 	FORCEINLINE void ACyborg::SetId(int NewId) { Id = NewId; }
+
 	void SetLife(int NewLife);
 	int GetLife();
 
@@ -40,6 +43,9 @@ public:
 
 	//Puzzles
 	void OnBottom();
+
+
+	int GetBottomNumber();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -59,9 +65,10 @@ private:
 		UPROPERTY(EditAnywhere)
 		USphereComponent* CollisionComp;
 
-	
+
 		int Life;
 		int Power;
 		bool SuperPower;
+		int Id=1;
 
 };

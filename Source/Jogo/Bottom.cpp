@@ -17,12 +17,20 @@ ABottom::ABottom()
 		MeshComp->SetStaticMesh(AlavancaMesh.Object);
 	}
 
-	ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/StarterContent/Materials/NewMaterial.NewMaterial'"));
-	if (Material.Succeeded()) {
-		MeshComp->SetMaterial(0, Material.Object);
+	if(BottomNum==1){
+		ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/Materials/Cyborg.Cyborg'"));
+		if (Material.Succeeded()) {
+			MeshComp->SetMaterial(0, Material.Object);
+		}
+	}else if(BottomNum==2){
+		ConstructorHelpers::FObjectFinder<UMaterial>Mater(TEXT("Material'/Game/Materials/Doctor.Doctor'"));
+		if (Mater.Succeeded()) {
+			MeshComp->SetMaterial(0, Mater.Object);
+		}
 	}
 
-	MeshComp->SetWorldScale3D(FVector(0.2f, 0.2f, 0.2f));
+
+	MeshComp->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	RootComponent = MeshComp;
 
 }
@@ -31,7 +39,7 @@ ABottom::ABottom()
 void ABottom::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -50,15 +58,15 @@ void ABottom::OnPressed() {
 		ALaser*Laser = Cast<ALaser>(Lasers[0]);
 		if (Laser->IsOpen()) {
 			Laser->SetOpen(false);
-			Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/StarterContent/Materials/M_Ground_Moss.M_Ground_Moss'")));
+			Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Acess.Acess'")));
 		}
 		else {
 			Laser->SetOpen(true);
-			Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/StarterContent/Materials/NewMaterial.NewMaterial'")));
-		}
-		if (Material != nullptr) {
-			MeshComp->SetMaterial(0, Material);
+			if(BottomNum==1){
+					Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Cyborg.Cyborg'")));
+			}else if(BottomNum==2){
+					Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Doctor.Doctor'")));
+			}
 		}
 	}
 }
-

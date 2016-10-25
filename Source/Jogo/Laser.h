@@ -23,11 +23,15 @@ public:
 	FORCEINLINE UStaticMeshComponent*GetLaser() const { return Laser; }
 	FORCEINLINE bool IsOpen()const { return Open; }
 	FORCEINLINE void ALaser::SetOpen(bool NewOpen) { Open = NewOpen; }
+	FORCEINLINE int GetLaserNum() const { return LaserNum; }
 
 private:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent*Laser;
 	bool Open;
+	
+	UPROPERTY(EditAnywhere)
+	int LaserNum;
 
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit);

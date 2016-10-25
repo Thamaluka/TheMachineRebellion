@@ -17,16 +17,18 @@ ALaser::ALaser()
 	if (MeshLaser.Succeeded()) {
 		Laser->SetStaticMesh(MeshLaser.Object);
 	}
-	Laser->SetWorldScale3D(FVector(1.0f,1.0f,1.0f));
+	Laser->SetWorldScale3D(FVector(0.5f,0.5f,0.5f));
+
 
 	Laser->OnComponentHit.AddDynamic(this, &ALaser::OnHit);
 	Laser->OnComponentBeginOverlap.AddDynamic(this, &ALaser::OnOverlapBegin);
 
+		ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/InfinityBladeEffects/LightsPavement.LightsPavement'"));
+		if (Material.Succeeded()) {
+			Laser->SetMaterial(0, Material.Object);
+		}
 
-	ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/InfinityBladeEffects/LightsPavement.LightsPavement'"));
-	if (Material.Succeeded()) {
-		Laser->SetMaterial(0, Material.Object);
-	}
+
 	RootComponent = Laser;
 
 }

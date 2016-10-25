@@ -226,7 +226,9 @@ void ADoctor::OnBottom() {
 	for (int i = 0; i < AtoresColetaveis.Num(); i++) {
 		 if (AtoresColetaveis[i]->IsA(ABottom::StaticClass())) {
 			ABottom* Botao = Cast<ABottom>(AtoresColetaveis[i]);
-			Botao->OnPressed();
+			if(Botao->GetBottomNum()==Id){
+					Botao->OnPressed();
+			}
 		}
 	}
 

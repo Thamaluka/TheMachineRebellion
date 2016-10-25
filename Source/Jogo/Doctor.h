@@ -27,6 +27,9 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	FORCEINLINE int GetId() const { return Id; }
+	FORCEINLINE void ADoctor::SetId(int NewId) { Id = NewId; }
+
 	void SetLife(int NewLife);
 	int GetLife();
 
@@ -72,6 +75,7 @@ private:
 	int Life;
 	int Power;
 	bool SuperPower;
+	int Id;
 
 
 };
