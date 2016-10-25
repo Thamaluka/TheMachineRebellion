@@ -39,6 +39,14 @@ private:
 	UPROPERTY(EditAnywhere)
 		int InimigoPeqLife = 500;
 
+
+	UPROPERTY(EditAnywhere)
+		UParticleSystemComponent* Dead;
+
+	UPROPERTY(EditAnywhere)
+		UParticleSystemComponent* Death;
+
+
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit);
 	UFUNCTION()

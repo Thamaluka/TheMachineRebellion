@@ -56,15 +56,17 @@ void ABottom::OnPressed() {
 
 	if (Lasers.Num() > 0) {
 		ALaser*Laser = Cast<ALaser>(Lasers[0]);
+		
 		if (Laser->IsOpen()) {
 			Laser->SetOpen(false);
 			Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Acess.Acess'")));
 		}
 		else {
 			Laser->SetOpen(true);
-			if(BottomNum==1){
+			Laser->Destroy();
+			if(BottomNum==1 && Laser->GetLaserNum()== BottomNum){
 					Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Cyborg.Cyborg'")));
-			}else if(BottomNum==2){
+			}else if(BottomNum==2 && Laser->GetLaserNum() == BottomNum){
 					Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Doctor.Doctor'")));
 			}
 		}

@@ -75,7 +75,7 @@ private:
 	int Life;
 	int Power;
 	bool SuperPower;
-	int Id;
+	int Id=2;
 
 
 };

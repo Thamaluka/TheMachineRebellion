@@ -74,7 +74,7 @@ ACyborg::ACyborg()
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+//	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
 
@@ -109,7 +109,6 @@ void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 	InputComponent->BindAction("PowerQ", IE_Pressed, this, &ACyborg::Escudo);
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
-
 	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ACyborg::OnBottom);
 
 

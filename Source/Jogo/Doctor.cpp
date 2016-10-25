@@ -47,6 +47,13 @@ ADoctor::ADoctor()
 		CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
 	}
 
+
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Doctor(TEXT("SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
+	if (Doctor.Succeeded()) {
+		GetMesh()->SetSkeletalMesh(Doctor.Object);
+	}
+	GetMesh()->SetWorldRotation(FRotator(-90.0f,0.0f,0.0f));
+
 	CursorToWorld->DecalSize = FVector(32.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 
@@ -86,10 +93,11 @@ ADoctor::ADoctor()
 	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->bAutoActivate = false;
 
+	bReplicates = true;
 
 
 
-	//AutoPossessPlayer = EAutoReceiveInput::Player0;
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
 

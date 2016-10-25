@@ -3,6 +3,7 @@
 #include "Jogo.h"
 #include "Laser.h"
 #include "Doctor.h"
+#include "Cyborg.h"
 
 
 // Sets default values
@@ -13,17 +14,18 @@ ALaser::ALaser()
 
 
 	Laser = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Laser"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshLaser(TEXT("StaticMesh'/Game/StarterContent/Architecture/Pillar_50x500.Pillar_50x500'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshLaser(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cylinder.Shape_Cylinder'"));
 	if (MeshLaser.Succeeded()) {
 		Laser->SetStaticMesh(MeshLaser.Object);
 	}
-	Laser->SetWorldScale3D(FVector(0.5f,0.5f,0.5f));
+	Laser->SetWorldScale3D(FVector(0.1f,0.1f,4.5f));
+	Laser->SetWorldRotation(FRotator(0.0f,0.0f,90.0f));
 
+	Laser->SetCollisionProfileName("BlockAllDynamic");
 
-	Laser->OnComponentHit.AddDynamic(this, &ALaser::OnHit);
 	Laser->OnComponentBeginOverlap.AddDynamic(this, &ALaser::OnOverlapBegin);
 
-		ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/InfinityBladeEffects/LightsPavement.LightsPavement'"));
+		ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/Materials/LightsPavement.LightsPavement'"));
 		if (Material.Succeeded()) {
 			Laser->SetMaterial(0, Material.Object);
 		}
@@ -61,16 +63,6 @@ void ALaser::Tick( float DeltaTime )
 
 }
 
-void ALaser::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit) {
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
-
-		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
-		Doctor->SetLife(Doctor->GetLife() - 50);
-		Doctor->OnDeath();
-		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Doctor->GetLife());
-	}
-
-}
 
 void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
@@ -79,6 +71,15 @@ void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - 50);
 		Doctor->OnDeath();
-		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Doctor->GetLife());
+		UE_LOG(LogTemp, Warning, TEXT("LifeDoctor = %d"), Doctor->GetLife());
+	}else
+	
+	if ((OtherActor != nullptr) && (OtherActor != this) &&
+		(OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
+
+		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
+		Cyborg->SetLife(Cyborg->GetLife() - 50);
+		Cyborg->OnDeath();
+		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Cyborg->GetLife());
 	}
 }

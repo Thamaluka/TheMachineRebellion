@@ -15,7 +15,7 @@ AInimigoBot::AInimigoBot()
 
 	GetCapsuleComponent()->SetCollisionProfileName("NoCollision");
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh>SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/SPIDBOT1.SPIDBOT1'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh>SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/Inimigos/InimigoBot/bot.bot'"));
 	if (SkeletalMesh.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(SkeletalMesh.Object);
 	}
@@ -25,6 +25,27 @@ AInimigoBot::AInimigoBot()
 
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
 	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
+
+
+	Dead = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeadPart"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Mobile/combat/P_RoboGolem_Death_Fire_01.P_RoboGolem_Death_Fire_01'"));
+	if (ParticleSys.Succeeded()) {
+		Dead->SetTemplate(ParticleSys.Object);
+	}
+
+	Dead->SetupAttachment(GetMesh());
+	Dead->SetWorldLocation(FVector(0.0f, 0.0f, 0.0f));
+	Dead->bAutoActivate = false;
+
+	Death = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeathPart"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Mobile/combat/P_Impact_RoboGolem_Gib_Fire.P_Impact_RoboGolem_Gib_Fire'"));
+	if (Particle.Succeeded()) {
+		Death->SetTemplate(Particle.Object);
+	}
+	Death->SetupAttachment(GetMesh());
+	Death->SetWorldLocation(FVector(0.0f, 0.0f, 0.0f));
+	Death->bAutoActivate = false;
+
 
 }
 
@@ -58,7 +79,9 @@ void AInimigoBot::SetInimigoPeqLife(int NewLife) {
 }
 
 void AInimigoBot::InimigoPeqDeath() {
+	Dead->ToggleActive();
 	if (InimigoPeqLife <= 0) {
+		Death->ToggleActive();
 		Destroy();
 	}
 }

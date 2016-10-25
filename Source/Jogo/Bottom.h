@@ -28,6 +28,7 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent*MeshComp;
+
 	UPROPERTY(EditAnywhere)
 	int BottomNum;
 
