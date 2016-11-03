@@ -97,7 +97,7 @@ ADoctor::ADoctor()
 
 
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
 }
 
