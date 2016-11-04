@@ -3,6 +3,8 @@
 #include "Jogo.h"
 #include "Cyborg.h"
 #include "InimigoBot.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
+#include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "Bottom.h"
 #include "Escudo.h"
 #include "Bottom.h"
@@ -70,7 +72,7 @@ ACyborg::ACyborg()
 
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
-
+	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
