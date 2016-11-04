@@ -12,7 +12,7 @@ ABottom::ABottom()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>AlavancaMesh(TEXT("StaticMesh'/Game/StarterContent/Props/SM_MatPreviewMesh_02.SM_MatPreviewMesh_02'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>AlavancaMesh(TEXT("StaticMesh'/Game/cidade/painel.painel'"));
 	if (AlavancaMesh.Succeeded()) {
 		MeshComp->SetStaticMesh(AlavancaMesh.Object);
 	}

@@ -52,9 +52,9 @@ ADoctor::ADoctor()
 	if (Doctor.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(Doctor.Object);
 	}
-	GetMesh()->SetWorldRotation(FRotator(-90.0f,0.0f,0.0f));
+	GetMesh()->SetWorldRotation(FRotator(0.0f,-90.0f,0.0f));
 
-	CursorToWorld->DecalSize = FVector(32.0f, 32.0f, 32.0f);
+	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 
 

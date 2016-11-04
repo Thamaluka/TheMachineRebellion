@@ -26,6 +26,12 @@ AInimigoBot::AInimigoBot()
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
 	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
 
+	ConstructorHelpers::FObjectFinder<UAnimSequence>
+		AnimLoad(TEXT("AnimSequence'/Game/Models/Inimigos/InimigoBot/bot_Anim.bot_Anim'"));
+	if (AnimLoad.Succeeded()) {
+		WalkAnim = AnimLoad.Object;
+	}
+
 
 	Dead = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeadPart"));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Mobile/combat/P_RoboGolem_Death_Fire_01.P_RoboGolem_Death_Fire_01'"));
