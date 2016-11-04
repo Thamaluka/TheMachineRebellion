@@ -15,7 +15,7 @@ AInimigoMedium::AInimigoMedium()
 
 	
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh>SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/SPIDBOT1.SPIDBOT1'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh>SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/Inimigos/InimigoGrande/robotMedium_Cylinder.robotMedium_Cylinder'"));
 	if (SkeletalMesh.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(SkeletalMesh.Object);
 	}
