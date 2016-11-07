@@ -19,7 +19,7 @@ APlataforma::APlataforma()
   }
   MeshComp->SetWorldScale3D(FVector(1.0f,1.0f,0.05f));
 
-  ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/Materials/Acess.Acess'"));
+  ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/Materials/Doctor.Doctor'"));
   if (Material.Succeeded()) {
     MeshComp->SetMaterial(0, Material.Object);
   }
@@ -47,11 +47,19 @@ void APlataforma::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
   if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
 
     ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
-
-    UMaterial* NewMaterial = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Doctor.Doctor'")));
+    UMaterial* NewMaterial = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Acess.Acess'")));
 			if (NewMaterial != nullptr) {
 				MeshComp->SetMaterial(0, NewMaterial);
 			}
+	TArray<AActor*> Lasers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALaser::StaticClass(),Lasers);
+	for (int i = 0; i < Lasers.Num(); i++){
+		ALaser* Laser = Cast<ALaser>(Lasers[0]);
+		if (Laser->GetLaserNum()==0) {
+			Laser->SetOpen(true);
+		}
+	}
+	
   }
 
 }
@@ -61,10 +69,20 @@ void APlataforma::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* Othe
 
     ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
 
-    UMaterial* NewMaterial = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Acess.Acess'")));
+    UMaterial* NewMaterial = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Doctor.Doctor'")));
       if (NewMaterial != nullptr) {
         MeshComp->SetMaterial(0, NewMaterial);
       }
+
+	  TArray<AActor*> Lasers;
+	  UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALaser::StaticClass(), Lasers);
+	  for (int i = 0; i < Lasers.Num(); i++) {
+		  ALaser* Laser = Cast<ALaser>(Lasers[0]);
+		  if (Laser->GetLaserNum() == 0) {
+			  Laser->SetOpen(false);
+		  }
+	  }
+
 
   }
 }
