@@ -53,6 +53,8 @@ ADoctor::ADoctor()
 		GetMesh()->SetSkeletalMesh(Doctor.Object);
 	}
 	GetMesh()->SetWorldRotation(FRotator(0.0f,-90.0f,0.0f));
+	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &ADoctor::OnOverlapBegin);
+
 
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
@@ -112,6 +114,7 @@ void ADoctor::BeginPlay()
 void ADoctor::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	Tiro = false;
 
 	if (CursorToWorld != nullptr)
 	{
@@ -183,11 +186,11 @@ void ADoctor::Cura() {
 }
 
 void ADoctor::Bomba() {
+	Tiro = true;
 	FActorSpawnParameters SpawnParameters;
 	UWorld* World = GetWorld();
 	if (World != nullptr) {
 		FRotator Rotation = RootComponent->GetComponentRotation();
-
 		AProjectileActor* Proj = World->SpawnActor<AProjectileActor>
 			(GetActorLocation(), Rotation,SpawnParameters);
 		if (Proj != nullptr) {
@@ -212,7 +215,6 @@ void ADoctor::Quimico() {
 
 
 void ADoctor::Nitrogenio() {
-
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 	NitrogenioPart->ToggleActive();
@@ -240,4 +242,16 @@ void ADoctor::OnBottom() {
 		}
 	}
 
+}
+
+void ADoctor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if ((OtherActor != nullptr) && (OtherActor != this) &&
+		(OtherComp != nullptr) && (OtherActor->IsA(AProjectileActor::StaticClass()))) {
+		if (!Tiro) {
+			AProjectileActor* Projectile = Cast<AProjectileActor>(OtherActor);
+			Life = Life - 100;
+
+			UE_LOG(LogTemp, Warning, TEXT("TIRO"));
+		}
+	}
 }

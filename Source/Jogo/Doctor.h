@@ -76,6 +76,10 @@ private:
 	int Power;
 	bool SuperPower;
 	int Id=2;
+	bool Tiro;
+
+	UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 
 };

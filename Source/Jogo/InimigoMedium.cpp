@@ -95,17 +95,4 @@ void AInimigoMedium::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 	}
 }
 
-void AInimigoMedium::DropArrow() {
-	Tiro = true;
-	FActorSpawnParameters SpawnParameters;
-	UWorld* World = GetWorld();
-	if (World != nullptr) {
-		FRotator Rotation = RootComponent->GetComponentRotation();
-		AProjectileActor* Proj = World->SpawnActor<AProjectileActor>
-			(GetActorLocation(), Rotation, SpawnParameters);
-		if (Proj != nullptr) {
-			//	UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
-		}
-	}
-}
 

@@ -2,6 +2,8 @@
 
 #include "Jogo.h"
 #include "ProjectileActor.h"
+#include "Doctor.h"
+#include "Cyborg.h"
 
 
 
@@ -12,7 +14,7 @@ AProjectileActor::AProjectileActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Root = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
-	Root->SetWorldScale3D(FVector(5.0f, 5.0f, 5.0f));
+	Root->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	RootComponent = Root;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
