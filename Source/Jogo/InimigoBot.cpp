@@ -98,7 +98,7 @@ void AInimigoBot::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - DamageAmount);
 		Doctor->OnDeath();
-		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), InimigoPeqLife);
+		
 
 	}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
 		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);

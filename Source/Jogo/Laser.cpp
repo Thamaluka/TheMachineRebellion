@@ -71,7 +71,7 @@ void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - 50);
 		Doctor->OnDeath();
-		UE_LOG(LogTemp, Warning, TEXT("LifeDoctor = %d"), Doctor->GetLife());
+		//UE_LOG(LogTemp, Warning, TEXT("LifeDoctor = %d"), Doctor->GetLife());
 	}else
 	
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
@@ -80,6 +80,6 @@ void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
 		Cyborg->SetLife(Cyborg->GetLife() - 50);
 		Cyborg->OnDeath();
-		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Cyborg->GetLife());
+		//UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Cyborg->GetLife());
 	}
 }
