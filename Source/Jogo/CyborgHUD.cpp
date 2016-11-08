@@ -14,7 +14,7 @@ ACyborgHUD::ACyborgHUD(){
 	if (Font.Succeeded()) {
 		HUDFont = Font.Object;
 	}
-	
+
 	static ConstructorHelpers::FObjectFinder<UTexture2D>Texture(TEXT("Texture2D'/Game/Materials/Green_Texture.Green_Texture'"));
 	if (Texture.Succeeded()) {
 		MyTexture = Texture.Object;
@@ -40,7 +40,7 @@ void ACyborgHUD::DrawHUD() {
 	DrawText(LifeString, FColor::Red, 50, 50, HUDFont);
 
 	FString PowerString = FString::Printf(TEXT("Life: %d"), Cyborg->GetPower());
-	DrawText(PowerString, FColor::Red, 70, 70, HUDFont);
+	DrawText(PowerString, FColor::Red, 50, 50, HUDFont);
 
 	DrawTexture(MyTexture, 50, 50, Cyborg->GetLife()/20,
 	20, 0, 0, Cyborg->GetLife()/20,
@@ -48,14 +48,9 @@ void ACyborgHUD::DrawHUD() {
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
 
-	DrawTexture(PowerTexture, 70, 70, Cyborg->GetPower() / 20,
-	20, 0, 0, Cyborg->GetPower() / 20,
+	DrawTexture(PowerTexture, 80, 80, Cyborg->GetPower() / 10,
+	20, 0, 0, Cyborg->GetPower() / 10,
 	20, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
 }
-
-
-
-
-

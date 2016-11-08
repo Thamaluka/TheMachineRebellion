@@ -44,6 +44,9 @@ public:
 	void Nitrogenio();
 	void OnBottom();
 
+	USoundCue* HitSound;
+	UAudioComponent* AudioComp;
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

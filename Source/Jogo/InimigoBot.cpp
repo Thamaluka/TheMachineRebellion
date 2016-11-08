@@ -26,11 +26,6 @@ AInimigoBot::AInimigoBot()
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
 	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
 
-	ConstructorHelpers::FObjectFinder<UAnimSequence>
-		AnimLoad(TEXT("AnimSequence'/Game/Models/Inimigos/InimigoBot/bot_Anim.bot_Anim'"));
-	if (AnimLoad.Succeeded()) {
-		WalkAnim = AnimLoad.Object;
-	}
 
 
 	Dead = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeadPart"));
@@ -58,7 +53,7 @@ AInimigoBot::AInimigoBot()
 	}
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->bAutoActivate = false;
-	AudioComp->AttachTo(GetMesh());
+	AudioComp->AttachTo(GetCapsuleComponent());
 
 
 }
@@ -93,11 +88,11 @@ void AInimigoBot::SetInimigoPeqLife(int NewLife) {
 }
 
 void AInimigoBot::InimigoPeqDeath() {
+	AudioComp->SetSound(DestroySound);
+	AudioComp->Play();
 	Dead->ToggleActive();
 	if (InimigoPeqLife <= 0) {
 		Death->ToggleActive();
-		AudioComp->SetSound(DestroySound);
-		AudioComp->Play();
 		Destroy();
 	}
 }
@@ -108,7 +103,7 @@ void AInimigoBot::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - DamageAmount);
 		Doctor->OnDeath();
-		
+
 
 	}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
 		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);

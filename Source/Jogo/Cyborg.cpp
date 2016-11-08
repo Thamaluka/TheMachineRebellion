@@ -7,7 +7,7 @@
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "Bottom.h"
 #include "Escudo.h"
-#include "Bottom.h"
+#include "InimigoMedium.h"
 
 
 
@@ -70,7 +70,7 @@ ACyborg::ACyborg()
 
 
 	Life = 5000;
-	Power = 3000;
+	Power = 300;
 
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
@@ -79,6 +79,17 @@ ACyborg::ACyborg()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 //	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+ConstructorHelpers::FObjectFinder<USoundCue>SoundCue(TEXT("SoundCue'/Game/Sounds/HurtCharacters_Cue.HurtCharacters_Cue'"));
+if (SoundCue.Succeeded()) {
+	HitSound = SoundCue.Object;
+}
+
+AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+AudioComp->bAutoActivate = false;
+AudioComp->AttachTo(GetMesh());
+
+
 
 }
 
@@ -128,6 +139,8 @@ int ACyborg::GetLife() {
 }
 
 void ACyborg::OnDeath() {
+	AudioComp->SetSound(HitSound);
+	AudioComp->Play();
 	if (Life <= 0) {
 		Life = 5000;
 		SetActorLocation(StartPlayer);
@@ -137,16 +150,13 @@ void ACyborg::OnDeath() {
 
 //Energia
 void ACyborg::SetPower(int NewPower) {
-	if (NewPower > 0) {
+	if (NewPower > 0 && Power+NewPower<5000) {
 		NewPower = NewPower + Power;
-	}
-	else {
-		Power = NewPower;
 	}
 }
 
 int ACyborg::GetPower() {
-	if (Power > 3000) {
+	if (Power > 5000) {
 		SuperPower = true;
 	}
 	return Power;
@@ -163,17 +173,25 @@ void ACyborg::Escudo(){
 }
 
 void ACyborg::Energy(){
-	TArray<AActor*> Colidido;
-	CollisionComp->GetOverlappingActors(Colidido);
-	EnergyPart->ToggleActive();
-	for (int i = 0; i < Colidido.Num(); i++) {
-		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
-			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
-			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
-			InimigoPequeno->InimigoPeqDeath();
-			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+//	if(SuperPower){
+		TArray<AActor*> Colidido;
+		CollisionComp->GetOverlappingActors(Colidido);
+		EnergyPart->ToggleActive();
+		for (int i = 0; i < Colidido.Num(); i++) {
+			if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
+				AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
+				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+				InimigoPequeno->InimigoPeqDeath();
+				Power = Power+100;
+				//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+			}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
+				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+				InimigoMedio->InimigoMedDeath();
+				Power = Power+200;
+			}
 		}
-	}
+	//}
 }
 
 //Colisao com o botao para abertura do laser
@@ -188,5 +206,4 @@ void ACyborg::OnBottom() {
 			}
 		}
 	}
-
 }

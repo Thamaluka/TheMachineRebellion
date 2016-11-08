@@ -65,6 +65,13 @@ private:
 		UPROPERTY(EditAnywhere)
 		USphereComponent* CollisionComp;
 
+		USoundCue* HitSound;
+		USoundCue* Attack01Sound;
+		USoundCue* Attack02Sound;
+		USoundCue* EscudoSound;
+		USoundCue* EnergySound;
+
+		UAudioComponent* AudioComp;
 
 		int Life;
 		int Power;

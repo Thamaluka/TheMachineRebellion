@@ -7,6 +7,8 @@
 #include "ProjectileActor.h"
 #include "InimigoBot.h"
 #include "Bottom.h"
+#include "Cyborg.h"
+#include "InimigoMedium.h"
 
 
 // Sets default values
@@ -97,6 +99,14 @@ ADoctor::ADoctor()
 
 	bReplicates = true;
 
+	ConstructorHelpers::FObjectFinder<USoundCue>SoundCue(TEXT("SoundCue'/Game/Sounds/HurtCharacters_Cue.HurtCharacters_Cue'"));
+	if (SoundCue.Succeeded()) {
+		HitSound = SoundCue.Object;
+	}
+
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->bAutoActivate = false;
+	AudioComp->AttachTo(GetMesh());
 
 
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -152,6 +162,8 @@ int ADoctor::GetLife() {
 }
 
 void ADoctor::OnDeath() {
+	AudioComp->SetSound(HitSound);
+	AudioComp->Play();
 	if (Life <= 0) {
 		Life = 3000;
 		SetActorLocation(StartPlayer);
@@ -161,11 +173,8 @@ void ADoctor::OnDeath() {
 
 //Energia
 void ADoctor::SetPower(int NewPower) {
-	if (NewPower > 0) {
+	if (NewPower > 0 && Power+NewPower<3000) {
 		NewPower = NewPower + Power;
-	}
-	else {
-		Power = NewPower;
 	}
 }
 
@@ -179,10 +188,20 @@ int ADoctor::GetPower() {
 //Poderes pelas teclas Q,W,E e R
 void ADoctor::Cura() {
 	CuraPart->ToggleActive();
-		if (Life + 120 < 3000){
-			Life = Life + 120;
-		}
+	TArray<AActor*> Curas;
+	CollisionComp->GetOverlappingActors(Curas);
 
+	for (int i = 0; i < Curas.Num(); i++) {
+		if (Curas[i]->IsA(ACyborg::StaticClass())) {
+			ACyborg* Cyborg = Cast<ACyborg>(Curas[i]);
+			if(Cyborg->GetLife()+100 <5000){
+				Cyborg->SetLife(Cyborg->GetLife()+100);
+			}
+		}
+	}
+if (Life + 120 < 3000){
+	Life = Life + 120;
+}
 }
 
 void ADoctor::Bomba() {
@@ -209,21 +228,33 @@ void ADoctor::Quimico() {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-100);
 			InimigoPequeno->InimigoPeqDeath();
+				Power = Power+100;
+		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+			InimigoMedio->InimigoMedDeath();
+				Power = Power+100;
 		}
 	}
 }
 
 
 void ADoctor::Nitrogenio() {
-	TArray<AActor*> Colidido;
-	CollisionComp->GetOverlappingActors(Colidido);
-	NitrogenioPart->ToggleActive();
-	for (int i = 0; i < Colidido.Num(); i++) {
-		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
-			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
-			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
-			InimigoPequeno->InimigoPeqDeath();
-			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+	if(SuperPower){
+		TArray<AActor*> Colidido;
+		CollisionComp->GetOverlappingActors(Colidido);
+		NitrogenioPart->ToggleActive();
+		for (int i = 0; i < Colidido.Num(); i++) {
+			if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
+				AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
+				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+				InimigoPequeno->InimigoPeqDeath();
+				//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+			}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
+				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+				InimigoMedio->InimigoMedDeath();
+			}
 		}
 	}
 }
