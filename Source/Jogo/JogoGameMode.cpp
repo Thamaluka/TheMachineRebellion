@@ -5,10 +5,13 @@
 #include "MyPlayerController.h"
 #include "Doctor.h"
 #include "Cyborg.h"
+#include "CyborgHUD.h"
 
 AJogoGameMode::AJogoGameMode() {
 	PlayerControllerClass = AMyPlayerController::StaticClass();
 	// DefaultPawnClass = ADoctor::StaticClass();
 	DefaultPawnClass = ACyborg::StaticClass();
+
+	HUDClass = ACyborgHUD::StaticClass();
 
 }

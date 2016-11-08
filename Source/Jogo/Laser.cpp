@@ -25,11 +25,18 @@ ALaser::ALaser()
 
 	Laser->OnComponentBeginOverlap.AddDynamic(this, &ALaser::OnOverlapBegin);
 
-		ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/Materials/LightsPavement.LightsPavement'"));
+	ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/Materials/LightsPavement.LightsPavement'"));
 		if (Material.Succeeded()) {
 			Laser->SetMaterial(0, Material.Object);
-		}
+	}
 
+	ConstructorHelpers::FObjectFinder<USoundCue>SoundCue(TEXT("SoundCue'/Game/Sounds/LaserSound_Cue.LaserSound_Cue'"));
+		if (SoundCue.Succeeded()) {
+			SpawnSound = SoundCue.Object;
+		}
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->bAutoActivate = false;
+	AudioComp->AttachTo(Laser);
 
 	RootComponent = Laser;
 
@@ -49,16 +56,27 @@ void ALaser::Tick( float DeltaTime )
 
 	FVector Scale = Laser->GetComponentScale();
 
+
 	if (Open && Scale.Z>=0) {
 		Scale.Z -= 0.3f;
 		Laser->SetCollisionProfileName("NoCollision");
+		
 	}
 	else if (!Open && Scale.Z<5.0f) {
 		Scale.Z += 0.3f;
 		Laser->SetCollisionProfileName("BlockAllDynamic");
+		
 	}
 
 	Laser->SetWorldScale3D(Scale);
+
+	if (!Open) {
+		AudioComp->SetSound(SpawnSound);
+		AudioComp->Play();
+	}
+	else {
+		AudioComp->Stop();
+	}
 
 
 }
@@ -71,7 +89,7 @@ void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - 50);
 		Doctor->OnDeath();
-		//UE_LOG(LogTemp, Warning, TEXT("LifeDoctor = %d"), Doctor->GetLife());
+		
 	}else
 	
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
@@ -80,6 +98,6 @@ void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
 		Cyborg->SetLife(Cyborg->GetLife() - 50);
 		Cyborg->OnDeath();
-		//UE_LOG(LogTemp, Warning, TEXT("Life = %d"), Cyborg->GetLife());
+		
 	}
 }

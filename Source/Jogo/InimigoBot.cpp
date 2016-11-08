@@ -52,6 +52,14 @@ AInimigoBot::AInimigoBot()
 	Death->SetWorldLocation(FVector(0.0f, 0.0f, 0.0f));
 	Death->bAutoActivate = false;
 
+	ConstructorHelpers::FObjectFinder<USoundCue>SoundCue(TEXT("SoundCue'/Game/Sounds/Inimigos/DestroyEnemie_Cue.DestroyEnemie_Cue'"));
+	if (SoundCue.Succeeded()) {
+		DestroySound = SoundCue.Object;
+	}
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->bAutoActivate = false;
+	AudioComp->AttachTo(GetMesh());
+
 
 }
 
@@ -88,6 +96,8 @@ void AInimigoBot::InimigoPeqDeath() {
 	Dead->ToggleActive();
 	if (InimigoPeqLife <= 0) {
 		Death->ToggleActive();
+		AudioComp->SetSound(DestroySound);
+		AudioComp->Play();
 		Destroy();
 	}
 }
