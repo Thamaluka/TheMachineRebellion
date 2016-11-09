@@ -9,16 +9,6 @@
 #include "InimigoMedium.h"
 
 
-#include "Runtime/UMG/Public/UMG.h"
-#include "Runtime/UMG/Public/UMGStyle.h"
-#include "Runtime/UMG/Public/IUMGModule.h"
-#include "Runtime/UMG/Public/Slate/SObjectWidget.h"
-#include "Runtime/UMG/Public/Blueprint/UserWidget.h"
-#include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
-#include "Blueprint/UserWidget.h"
-
-
-
 // Sets default values
 ACyborg::ACyborg()
 {
@@ -78,7 +68,7 @@ ACyborg::ACyborg()
 
 
 	Life = 5000;
-	Power = 300;
+	Power = 3000;
 
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
@@ -97,14 +87,6 @@ if (SoundCue.Succeeded()) {
 AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 AudioComp->bAutoActivate = false;
 AudioComp->AttachTo(GetMesh());
-
-
-ConstructorHelpers::FClassFinder<UUserWidget>
-		Widget(TEXT("WidgetBlueprint'/Game/Blueprints/Menu/Pause.Pause'"));
-	if (Widget.Succeeded()) {
-		UserWidget = Widget.Class;
-	}
-
 
 
 }
@@ -142,7 +124,7 @@ void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
 	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ACyborg::OnBottom);
 
-	InputComponent->BindAction("Pause", IE_Pressed, this, &ACyborg::Pause);
+//	InputComponent->BindAction("Pause", IE_Pressed, this, &ACyborg::Pause);
 
 
 }
@@ -221,21 +203,6 @@ void ACyborg::OnBottom() {
 			ABottom* Botao = Cast<ABottom>(AtoresColetaveis[i]);
 			if(Botao->GetBottomNum()==Id){
 					Botao->OnPressed();
-			}
-		}
-	}
-}
-
-void ACyborg::Pause(){
-	UWorld* World = GetWorld();
-	if (World != nullptr) {
-		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(World, 0);
-		if (PlayerController != nullptr && UserWidget != NULL) {
-			PlayerController->SetPause(true);
-			UUserWidget* UserW = UWidgetBlueprintLibrary::Create (World, UserWidget, PlayerController);
-			if (UserW != nullptr) {
-				UserW->AddToViewport();
-				PlayerController->bShowMouseCursor = true;
 			}
 		}
 	}

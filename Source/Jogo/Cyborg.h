@@ -44,8 +44,6 @@ public:
 	//Puzzles
 	void OnBottom();
 
-	void Pause();
-
 	int GetBottomNumber();
 
 private:

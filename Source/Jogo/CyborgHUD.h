@@ -6,14 +6,14 @@
 #include "CyborgHUD.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class JOGO_API ACyborgHUD : public AHUD
 {
 	GENERATED_BODY()
 
-	
+
 public:
 	ACyborgHUD();
 
@@ -21,10 +21,12 @@ public:
 	UPROPERTY(EditAnywhere)
 		UFont*HUDFont;
 	UPROPERTY(EditAnywhere)
+		UTexture2D* HudCyborg;
+	UPROPERTY(EditAnywhere)
 		UTexture2D* MyTexture;
 	UPROPERTY(EditAnywhere)
 		UTexture2D* PowerTexture;
 
 	virtual void DrawHUD() override;
-	
+
 };

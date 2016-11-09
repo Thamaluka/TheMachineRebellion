@@ -25,6 +25,11 @@ ACyborgHUD::ACyborgHUD(){
 		PowerTexture = TextureP.Object;
 	}
 
+	static ConstructorHelpers::FObjectFinder<UTexture2D>TextureHud(TEXT("Texture2D'/Game/Materials/HUDTest2.HUDTest2'"));
+	if (TextureHud.Succeeded()) {
+		HudCyborg = TextureHud.Object;
+	}
+
 
 }
 
@@ -37,20 +42,26 @@ void ACyborgHUD::DrawHUD() {
 	ACyborg* Cyborg = Cast<ACyborg>(UGameplayStatics::GetPlayerPawn(this, 0));
 
 	FString LifeString = FString::Printf(TEXT("Life: %d"),Cyborg->GetLife());
-	DrawText(LifeString, FColor::Red, 50, 50, HUDFont);
+	DrawText(LifeString, FColor::Red, 30, 50, HUDFont);
 
-	FString PowerString = FString::Printf(TEXT("Life: %d"), Cyborg->GetPower());
-	DrawText(PowerString, FColor::Red, 50, 50, HUDFont);
+	FString PowerString = FString::Printf(TEXT("Power: %d"), Cyborg->GetPower());
+	DrawText(PowerString, FColor::Black, 40, 50, HUDFont);
 
-	DrawTexture(MyTexture, 50, 50, Cyborg->GetLife()/20,
-	20, 0, 0, Cyborg->GetLife()/20,
-	20, FLinearColor::White,
+DrawTextureSimple(HudCyborg, 50, 50, 1.0f, false);
+
+	DrawTexture(MyTexture, 150, 109, Cyborg->GetLife()/33,
+	9, 0, 0, Cyborg->GetLife()/33,
+	5, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
 
-	DrawTexture(PowerTexture, 80, 80, Cyborg->GetPower() / 10,
-	20, 0, 0, Cyborg->GetPower() / 10,
-	20, FLinearColor::White,
+//														x,y
+	DrawTexture(PowerTexture, 150, 91, Cyborg->GetPower() / 40,
+	9, 0, 0, Cyborg->GetPower() / 40,
+	9, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
+
+
+
 }
