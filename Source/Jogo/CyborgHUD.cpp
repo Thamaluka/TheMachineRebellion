@@ -41,13 +41,8 @@ void ACyborgHUD::DrawHUD() {
 
 	ACyborg* Cyborg = Cast<ACyborg>(UGameplayStatics::GetPlayerPawn(this, 0));
 
-	FString LifeString = FString::Printf(TEXT("Life: %d"),Cyborg->GetLife());
-	DrawText(LifeString, FColor::Red, 30, 50, HUDFont);
 
-	FString PowerString = FString::Printf(TEXT("Power: %d"), Cyborg->GetPower());
-	DrawText(PowerString, FColor::Black, 40, 50, HUDFont);
-
-DrawTextureSimple(HudCyborg, 50, 50, 1.0f, false);
+	DrawTextureSimple(HudCyborg, 50, 50, 1.0f, false);
 
 	DrawTexture(MyTexture, 150, 109, Cyborg->GetLife()/33,
 	9, 0, 0, Cyborg->GetLife()/33,
