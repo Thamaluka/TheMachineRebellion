@@ -9,17 +9,39 @@ UCLASS()
 class JOGO_API ABoss : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+
+
+
+
+public:
 	// Sets default values for this actor's properties
 	ABoss();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	
-	
+	void SetLife(int NewLife);
+	int GetLife();
+
+	void SetTorres(int NewTorres);
+	int GetTorres();
+
+
+	void OnDeath();
+
+private:
+
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent*Mesh;
+	int Life=1000;
+	int Torres=4;
+
+
+
+
 };

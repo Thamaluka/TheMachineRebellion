@@ -25,6 +25,11 @@ ADoctorHUD::ADoctorHUD(){
 		PowerTexture = TextureP.Object;
 	}
 
+	static ConstructorHelpers::FObjectFinder<UTexture2D>TextureHud(TEXT("Texture2D'/Game/Materials/HUDTest2.HUDTest2'"));
+	if (TextureHud.Succeeded()) {
+		HUDTexture = TextureHud.Object;
+	}
+
 
 }
 
@@ -39,18 +44,17 @@ void ADoctorHUD::DrawHUD() {
 //	FString LifeString = FString::Printf(TEXT("Life: %d"),Doctor->GetLife());
 //	DrawText(LifeString, FColor::Red, 50, 50, HUDFont);
 
-	FString PowerString = FString::Printf(TEXT("Life: %d"), Doctor->GetPower());
-	DrawText(PowerString, FColor::Red, 150, 150, HUDFont);
+	DrawTextureSimple(HUDTexture, 50, 50, 1.0f, false);
 
-	DrawTexture(MyTexture, 50, 50, Doctor->GetLife()/20,
-	20, 0, 0, Doctor->GetLife()/20,
-	20, FLinearColor::White,
+	DrawTexture(MyTexture, 150, 109, Doctor->GetLife()/33,
+	9, 0, 0, Doctor->GetLife()/20,
+	5, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
 
-	DrawTexture(PowerTexture, 80, 80, Doctor->GetPower() / 10,
-	20, 0, 0, Doctor->GetPower() / 10,
-	20, FLinearColor::White,
+	DrawTexture(PowerTexture, 150, 91, Doctor->GetPower() / 40,
+	9, 0, 0, Doctor->GetPower() / 10,
+	9, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
 }

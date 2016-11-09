@@ -9,6 +9,8 @@
 #include "Bottom.h"
 #include "Cyborg.h"
 #include "InimigoMedium.h"
+#include "Towers.h"
+#include "Boss.h"
 
 
 // Sets default values
@@ -65,7 +67,7 @@ ADoctor::ADoctor()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
-	Life = 3000;
+	Life = 5000;
 	Power = 0;
 
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollectCollision"));
@@ -234,6 +236,18 @@ void ADoctor::Quimico() {
 			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
 			InimigoMedio->InimigoMedDeath();
 				Power = Power+100;
+		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+			ATowers* Tower = Cast<ATowers>(Colidido[i]);
+			Tower->SetLife(Tower->GetLife()-100);
+			Tower->OnDeath();
+			Power = Power+100;
+		}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+			ABoss* Boss = Cast<ABoss>(Colidido[i]);
+			if(Boss->GetTorres()<=0){
+				Boss->SetLife(Boss->GetLife()-100);
+				Boss->OnDeath();
+				Power = Power+100;
+			}
 		}
 	}
 }
@@ -254,6 +268,17 @@ void ADoctor::Nitrogenio() {
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
 				InimigoMedio->InimigoMedDeath();
+			}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+				ATowers* Tower = Cast<ATowers>(Colidido[i]);
+				Tower->SetLife(Tower->GetLife()-100);
+				Tower->OnDeath();
+			}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+				ABoss* Boss = Cast<ABoss>(Colidido[i]);
+				if(Boss->GetTorres()<=0){
+					Boss->SetLife(Boss->GetLife()-100);
+					Boss->OnDeath();
+					Power = Power+100;
+				}
 			}
 		}
 	}

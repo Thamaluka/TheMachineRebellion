@@ -23,6 +23,8 @@ public:
 		UTexture2D* MyTexture;
 	UPROPERTY(EditAnywhere)
 		UTexture2D* PowerTexture;
+	UPROPERTY(EditAnywhere)
+			UTexture2D* HUDTexture;
 
 	virtual void DrawHUD() override;
 

@@ -7,6 +7,9 @@
 #include "Bottom.h"
 #include "Escudo.h"
 #include "InimigoMedium.h"
+#include "Towers.h"
+#include "Boss.h"
+
 
 
 // Sets default values
@@ -189,6 +192,18 @@ void ACyborg::Energy(){
 				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
 				InimigoMedio->InimigoMedDeath();
 				Power = Power+200;
+			}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+				ATowers* Tower = Cast<ATowers>(Colidido[i]);
+				Tower->SetLife(Tower->GetLife()-200);
+				Tower->OnDeath();
+				Power = Power+200;
+			}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+				ABoss* Boss = Cast<ABoss>(Colidido[i]);
+				if(Boss->GetTorres()<=0){
+					Boss->SetLife(Boss->GetLife()-100);
+					Boss->OnDeath();
+					Power = Power+100;
+				}
 			}
 		}
 	//}

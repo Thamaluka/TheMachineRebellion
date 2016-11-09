@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "Cyborg.generated.h"
 
+
 UCLASS()
 class JOGO_API ACyborg : public ACharacter
 {

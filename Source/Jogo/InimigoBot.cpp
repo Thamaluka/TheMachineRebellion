@@ -24,7 +24,7 @@ AInimigoBot::AInimigoBot()
 	GetMesh()->SetCollisionProfileName("BlockAll");
 
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
-	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoBot::OnHit);
+
 
 
 
@@ -97,21 +97,6 @@ void AInimigoBot::InimigoPeqDeath() {
 	}
 }
 
-void AInimigoBot::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit) {
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
-
-		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
-		Doctor->SetLife(Doctor->GetLife() - DamageAmount);
-		Doctor->OnDeath();
-
-
-	}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
-		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
-		Cyborg->SetLife(Cyborg->GetLife() - DamageAmount);
-		Cyborg->OnDeath();
-	}
-
-}
 
 void AInimigoBot::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
@@ -120,6 +105,16 @@ void AInimigoBot::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		InimigoPeqLife -= 50;
 		Projectile->DestroyProjectile();
 		InimigoPeqDeath();
+	}else 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
 
-	}
+			ADoctor* Doctor = Cast<ADoctor>(OtherActor);
+			Doctor->SetLife(Doctor->GetLife() - DamageAmount);
+			Doctor->OnDeath();
+
+
+		}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
+			ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
+			Cyborg->SetLife(Cyborg->GetLife() - DamageAmount);
+			Cyborg->OnDeath();
+		}
 }

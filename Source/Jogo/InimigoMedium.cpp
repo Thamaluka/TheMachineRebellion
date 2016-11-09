@@ -13,7 +13,7 @@ AInimigoMedium::AInimigoMedium()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh>SkeletalMesh(TEXT("SkeletalMesh'/Game/Models/Inimigos/InimigoGrande/robotMedium_Cylinder.robotMedium_Cylinder'"));
 	if (SkeletalMesh.Succeeded()) {
@@ -24,7 +24,7 @@ AInimigoMedium::AInimigoMedium()
 	GetMesh()->SetCollisionProfileName("BlockAll");
 
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoMedium::OnOverlapBegin);
-	GetMesh()->OnComponentHit.AddDynamic(this, &AInimigoMedium::OnHit);
+
 
 }
 
@@ -32,9 +32,9 @@ AInimigoMedium::AInimigoMedium()
 void AInimigoMedium::BeginPlay()
 {
 	Super::BeginPlay();
-	
 
-	
+
+
 }
 
 // Called every frame
@@ -66,22 +66,6 @@ void AInimigoMedium::InimigoMedDeath() {
 	}
 }
 
-void AInimigoMedium::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit) {
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
-
-		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
-		Doctor->SetLife(Doctor->GetLife() - DamageAmount);
-		Doctor->OnDeath();
-		UE_LOG(LogTemp, Warning, TEXT("Life = %d"), InimigoMedLife);
-
-	}
-	else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
-		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
-		Cyborg->SetLife(Cyborg->GetLife() - DamageAmount);
-		Cyborg->OnDeath();
-	}
-
-}
 
 void AInimigoMedium::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
@@ -91,8 +75,16 @@ void AInimigoMedium::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 			InimigoMedLife -= 50;
 			Projectile->DestroyProjectile();
 			InimigoMedDeath();
-		}
+		}else 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
+				ADoctor* Doctor = Cast<ADoctor>(OtherActor);
+				Doctor->SetLife(Doctor->GetLife() - DamageAmount);
+				Doctor->OnDeath();
+				UE_LOG(LogTemp, Warning, TEXT("Life = %d"), InimigoMedLife);
+			}
+			else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
+				ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
+				Cyborg->SetLife(Cyborg->GetLife() - DamageAmount);
+				Cyborg->OnDeath();
+			}
 	}
 }
-
-

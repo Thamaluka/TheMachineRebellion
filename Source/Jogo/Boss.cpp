@@ -2,6 +2,8 @@
 
 #include "Jogo.h"
 #include "Boss.h"
+#include "Towers.h"
+
 
 
 // Sets default values
@@ -9,6 +11,12 @@ ABoss::ABoss()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshBoss(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
+	if (MeshBoss.Succeeded()) {
+		Mesh->SetStaticMesh(MeshBoss.Object);
+	}
+	Mesh->SetWorldScale3D(FVector(2.0f,4.5f,2.0f));
 
 }
 
@@ -16,7 +24,7 @@ ABoss::ABoss()
 void ABoss::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -24,5 +32,32 @@ void ABoss::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+
+	}
+
+
+
+void ABoss::SetLife(int NewLife) {
+	Life = NewLife;
 }
 
+
+int ABoss::GetLife() {
+	return Life;
+}
+
+void ABoss::OnDeath() {
+	if (Life <= 0 && Torres<=0) {
+		Destroy();
+	}
+}
+
+
+void ABoss::SetTorres(int NewTorres) {
+	Torres = NewTorres;
+}
+
+
+int ABoss::GetTorres() {
+	return Torres;
+}
