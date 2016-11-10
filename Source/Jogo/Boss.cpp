@@ -80,13 +80,14 @@ int ABoss::GetTorres() {
 	}
  }
 
- void ABoss::SpawnEnemies(){
+ void ABoss::SpawnEnemies() {
 	 FActorSpawnParameters SpawnParameters;
 	 UWorld* const World = GetWorld();
 	 if (World != nullptr) {
- 		FRotator Rotation = RootComponent->GetComponentRotation();
- 		InimigoBot* Bot = World->SpawnActor<AProjectileActor>(GetActorLocation(), GetActorRotation(),SpawnParameters);
- 		if (Bot != nullptr) {
- 			UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
- 		}
+		 FRotator Rotation = RootComponent->GetComponentRotation();
+		 AInimigoBot* Bot = World->SpawnActor<AInimigoBot>(GetActorLocation(), Rotation, SpawnParameters);
+		 if (Bot != nullptr) {
+			 UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+		 }
+	 }
  }
