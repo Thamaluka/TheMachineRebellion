@@ -32,6 +32,7 @@ public:
 
 
 	void OnDeath();
+	void SpawnEnemies();
 
 private:
 
@@ -40,6 +41,10 @@ private:
 	UStaticMeshComponent*Mesh;
 	int Life=1000;
 	int Torres=4;
+
+	FTimerHandle CountdownTimerHandle;
+	float CountdownTime;
+	void TimerManager();
 
 
 

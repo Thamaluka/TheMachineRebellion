@@ -25,9 +25,6 @@ AInimigoBot::AInimigoBot()
 
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoBot::OnOverlapBegin);
 
-
-
-
 	Dead = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("DeadPart"));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Mobile/combat/P_RoboGolem_Death_Fire_01.P_RoboGolem_Death_Fire_01'"));
 	if (ParticleSys.Succeeded()) {
@@ -55,6 +52,11 @@ AInimigoBot::AInimigoBot()
 	AudioComp->bAutoActivate = false;
 	AudioComp->AttachTo(GetCapsuleComponent());
 
+
+static ConstructorHelpers::FObjectFinder<UBlueprint>BotBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/InimigoBotAnim/AIInimigoBot.AIInimigoBot'"));
+ if(BotBlueprint.Object){
+	 MyAiBlueprint = (UClass*)BotBlueprint.Object->GeneratedClass;
+ }
 
 }
 

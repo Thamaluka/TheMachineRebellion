@@ -3,6 +3,8 @@
 #include "Jogo.h"
 #include "Boss.h"
 #include "Towers.h"
+#include "InimigoBot.h"
+#include "InimigoMedium.h"
 
 
 
@@ -18,12 +20,16 @@ ABoss::ABoss()
 	}
 	Mesh->SetWorldScale3D(FVector(2.0f,4.5f,2.0f));
 
+	CountdownTime = 100.0f;
+
 }
 
 // Called when the game starts or when spawned
 void ABoss::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this,&ABoss::TimerManager, 1.0f, true);
 
 }
 
@@ -32,6 +38,10 @@ void ABoss::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	ABoss::TimerManager();
+	if (CountdownTime <= 0) {
+		CountdownTime = 100.0f;
+	}
 
 	}
 
@@ -61,3 +71,22 @@ void ABoss::SetTorres(int NewTorres) {
 int ABoss::GetTorres() {
 	return Torres;
 }
+
+ void ABoss::TimerManager(){
+	 CountdownTime -= 1.0f;
+	if (CountdownTime <= 0.0f) {
+		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
+		ABoss::SpawnEnemies();
+	}
+ }
+
+ void ABoss::SpawnEnemies(){
+	 FActorSpawnParameters SpawnParameters;
+	 UWorld* const World = GetWorld();
+	 if (World != nullptr) {
+ 		FRotator Rotation = RootComponent->GetComponentRotation();
+ 		InimigoBot* Bot = World->SpawnActor<AProjectileActor>(GetActorLocation(), GetActorRotation(),SpawnParameters);
+ 		if (Bot != nullptr) {
+ 			UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+ 		}
+ }
