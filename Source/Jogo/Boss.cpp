@@ -76,16 +76,11 @@ int ABoss::GetTorres() {
 	 CountdownTime -= 1.0f;
 	if (CountdownTime <= 0.0f) {
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
-		ABoss::SpawnEnemies();
+	
 	}
  }
 
 
  void ABoss::SpawnEnemies() {
-
- }
-
- void ABoss::SpawnEnemies() {
-	 
 
  }
