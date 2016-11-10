@@ -23,9 +23,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
- TSubclassOf<class AInimigoBot> MyAiBlueprint;
+ //TSubclassOf<class AInimigoBot> MyAiBlueprint;
 
-	FORCEINLINE UStaticMeshComponent* GetMeshComp()const { return MeshComp; }
+	//FORCEINLINE UStaticMeshComponent* GetMeshComp()const { return MeshComp; }
 
 	void SetInimigoPeqLife(int NewLife);
 	int GetInimigoPeqLife();

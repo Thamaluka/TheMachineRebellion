@@ -52,12 +52,12 @@ AInimigoBot::AInimigoBot()
 	AudioComp->bAutoActivate = false;
 	AudioComp->AttachTo(GetCapsuleComponent());
 
-
+/*
 static ConstructorHelpers::FObjectFinder<UBlueprint>BotBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/InimigoBotAnim/AIInimigoBot.AIInimigoBot'"));
  if(BotBlueprint.Object){
 	 MyAiBlueprint = (UClass*)BotBlueprint.Object->GeneratedClass;
  }
-
+*/
 }
 
 // Called when the game starts or when spawned
