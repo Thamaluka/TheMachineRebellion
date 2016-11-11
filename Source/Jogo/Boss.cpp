@@ -22,6 +22,11 @@ ABoss::ABoss()
 
 	CountdownTime = 100.0f;
 
+	static ConstructorHelpers::FObjectFinder<UBlueprint>BotBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/InimigoBotAnim/AIInimigoBot.AIInimigoBot'"));
+	if (BotBlueprint.Object) {
+		MyAiBlueprint = (UClass*)BotBlueprint.Object->GeneratedClass;
+	}
+
 }
 
 // Called when the game starts or when spawned
@@ -76,11 +81,22 @@ int ABoss::GetTorres() {
 	 CountdownTime -= 1.0f;
 	if (CountdownTime <= 0.0f) {
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
-	
+		SpawnEnemies();
 	}
  }
 
 
  void ABoss::SpawnEnemies() {
+	 FActorSpawnParameters SpawnParameters;
+	 UWorld* const World = GetWorld();
+	 if (World != nullptr) {
+		 FRotator Rotation = RootComponent->GetComponentRotation();
+		 FVector Location = FVector(-580.0f,-240.0f,20.0f);
+		 AInimigoBot* Bot = World->SpawnActor<AInimigoBot>(MyAiBlueprint, Location, Rotation, SpawnParameters);
+		 if (Bot != nullptr) {
+			 UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+		 }
 
+	 }
+	 
  }

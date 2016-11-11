@@ -24,6 +24,8 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	TSubclassOf<class AInimigoBot> MyAiBlueprint;
+
 	void SetLife(int NewLife);
 	int GetLife();
 

@@ -44,6 +44,10 @@ public:
 	void Nitrogenio();
 	void OnBottom();
 
+	void Pause();
+
+	TSubclassOf<class UUserWidget> UserWidget;
+
 	USoundCue* HitSound;
 	UAudioComponent* AudioComp;
 
