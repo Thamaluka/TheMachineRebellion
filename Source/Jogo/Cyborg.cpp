@@ -3,6 +3,16 @@
 #include "Jogo.h"
 #include "Cyborg.h"
 
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
+#include "Runtime/Engine/Classes/Components/DecalComponent.h"
+#include "Runtime/UMG/Public/UMG.h"
+#include "Runtime/UMG/Public/UMGStyle.h"
+#include "Runtime/UMG/Public/IUMGModule.h"
+#include "Runtime/UMG/Public/Slate/SObjectWidget.h"
+#include "Runtime/UMG/Public/Blueprint/UserWidget.h"
+#include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
+#include "Blueprint/UserWidget.h"
+
 #include "InimigoBot.h"
 #include "Bottom.h"
 #include "Escudo.h"
@@ -91,6 +101,11 @@ AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 AudioComp->bAutoActivate = false;
 AudioComp->AttachTo(GetMesh());
 
+ConstructorHelpers::FClassFinder<UUserWidget>Widget(TEXT("WidgetBlueprint'/Game/Blueprints/Menu/Pause.Pause_C'"));
+if (Widget.Succeeded()) {
+	UserWidget = Widget.Class;
+}
+
 
 }
 
@@ -126,6 +141,7 @@ void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	InputComponent->BindAction("PowerQ", IE_Pressed, this, &ACyborg::Escudo);
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
 	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ACyborg::OnBottom);
+	InputComponent->BindAction("Pause", IE_Pressed, this, &ACyborg::Pause);
 
 //	InputComponent->BindAction("Pause", IE_Pressed, this, &ACyborg::Pause);
 
@@ -219,6 +235,23 @@ void ACyborg::OnBottom() {
 			if(Botao->GetBottomNum()==Id){
 					Botao->OnPressed();
 			}
+		}
+	}
+}
+
+void ACyborg::Pause(){
+	UWorld* World = GetWorld();
+	if (World != nullptr) {
+		APlayerController* PlayerController =
+			UGameplayStatics::GetPlayerController(World, 0);
+		if (PlayerController != nullptr && UserWidget != NULL) {
+			PlayerController->SetPause(true);
+			UUserWidget* UserW = UWidgetBlueprintLibrary::Create(World, UserWidget, PlayerController);
+			if (UserW != nullptr) {
+				UserW->AddToViewport();
+				PlayerController->bShowMouseCursor = true;
+			}
+
 		}
 	}
 }

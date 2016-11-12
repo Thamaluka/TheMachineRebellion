@@ -44,8 +44,10 @@ public:
 
 	//Puzzles
 	void OnBottom();
-
 	int GetBottomNumber();
+
+	void Pause();
+	TSubclassOf<class UUserWidget> UserWidget;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

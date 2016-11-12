@@ -25,6 +25,8 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	TSubclassOf<class AInimigoBot> MyAiBlueprint;
+	TSubclassOf<class AInimigoMedium>MyAi;
+
 
 	void SetLife(int NewLife);
 	int GetLife();
@@ -35,6 +37,7 @@ public:
 
 	void OnDeath();
 	void SpawnEnemies();
+	void SpawnEnemiesMed();
 
 private:
 

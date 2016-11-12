@@ -20,11 +20,16 @@ ABoss::ABoss()
 	}
 	Mesh->SetWorldScale3D(FVector(2.0f,4.5f,2.0f));
 
-	CountdownTime = 100.0f;
+	CountdownTime = 1000.0f;
 
 	static ConstructorHelpers::FObjectFinder<UBlueprint>BotBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/InimigoBotAnim/AIInimigoBot.AIInimigoBot'"));
 	if (BotBlueprint.Object) {
 		MyAiBlueprint = (UClass*)BotBlueprint.Object->GeneratedClass;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint>MedBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/AIInimigoMedium.AIInimigoMedium'"));
+	if (MedBlueprint.Object) {
+		MyAi = (UClass*)MedBlueprint.Object->GeneratedClass;
 	}
 
 }
@@ -45,7 +50,7 @@ void ABoss::Tick( float DeltaTime )
 
 	ABoss::TimerManager();
 	if (CountdownTime <= 0) {
-		CountdownTime = 100.0f;
+		CountdownTime = 1000.0f;
 	}
 
 	}
@@ -82,21 +87,41 @@ int ABoss::GetTorres() {
 	if (CountdownTime <= 0.0f) {
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
 		SpawnEnemies();
+		SpawnEnemiesMed();
 	}
  }
 
 
  void ABoss::SpawnEnemies() {
-	 FActorSpawnParameters SpawnParameters;
-	 UWorld* const World = GetWorld();
-	 if (World != nullptr) {
-		 FRotator Rotation = RootComponent->GetComponentRotation();
-		 FVector Location = FVector(-580.0f,-240.0f,20.0f);
-		 AInimigoBot* Bot = World->SpawnActor<AInimigoBot>(MyAiBlueprint, Location, Rotation, SpawnParameters);
-		 if (Bot != nullptr) {
-			 UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
-		 }
+	 int CountBot=3;
+	 for (int i =0 ; i < CountBot; i++) {
+	 	if(i <=CountBot){
+			FActorSpawnParameters SpawnParameters;
+			UWorld* const World = GetWorld();
+			if (World != nullptr) {
+				FRotator Rotation = RootComponent->GetComponentRotation();
+				FVector Location = FVector(-580.0f,-240.0f,20.0f);
+				FVector MedLocation = FVector(-600.0f,-200.0f,20.0f);
+				AInimigoBot* Bot = World->SpawnActor<AInimigoBot>(MyAiBlueprint, Location, Rotation, SpawnParameters);
 
+			}
+		}
 	 }
-	 
+ }
+
+
+ void ABoss::SpawnEnemiesMed() {
+	 int CountBot=3;
+	 for (int i =0 ; i < CountBot; i++) {
+	 	if(i <=CountBot){
+			FActorSpawnParameters SpawnParameters;
+			UWorld* const World = GetWorld();
+			if (World != nullptr) {
+				FRotator Rotation = RootComponent->GetComponentRotation();
+				FVector MedLocation = FVector(200.0f,-200.0f,20.0f);
+
+				AInimigoMedium* Med = World->SpawnActor<AInimigoMedium>(MyAi,MedLocation,Rotation,SpawnParameters);
+			}
+		}
+	 }
  }
