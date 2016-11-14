@@ -52,8 +52,10 @@ AInimigoBot::AInimigoBot()
 	AudioComp->bAutoActivate = false;
 	AudioComp->AttachTo(GetCapsuleComponent());
 
-
+	
+	
 }
+
 
 // Called when the game starts or when spawned
 void AInimigoBot::BeginPlay()

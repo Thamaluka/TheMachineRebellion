@@ -4,6 +4,13 @@
 #include "Doctor.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
+#include "Runtime/UMG/Public/UMG.h"
+#include "Runtime/UMG/Public/UMGStyle.h"
+#include "Runtime/UMG/Public/IUMGModule.h"
+#include "Runtime/UMG/Public/Slate/SObjectWidget.h"
+#include "Runtime/UMG/Public/Blueprint/UserWidget.h"
+#include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
+#include "Blueprint/UserWidget.h"
 #include "ProjectileActor.h"
 #include "InimigoBot.h"
 #include "Bottom.h"
@@ -16,7 +23,7 @@
 // Sets default values
 ADoctor::ADoctor()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationPitch = false;
@@ -56,7 +63,7 @@ ADoctor::ADoctor()
 	if (Doctor.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(Doctor.Object);
 	}
-	GetMesh()->SetWorldRotation(FRotator(0.0f,-90.0f,0.0f));
+	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &ADoctor::OnOverlapBegin);
 
 
@@ -110,6 +117,16 @@ ADoctor::ADoctor()
 	AudioComp->bAutoActivate = false;
 	AudioComp->AttachTo(GetMesh());
 
+	ConstructorHelpers::FClassFinder<UUserWidget>Widget(TEXT("WidgetBlueprint'/Game/Blueprints/Menu/Pause.Pause_C'"));
+	if (Widget.Succeeded()) {
+		UserWidget = Widget.Class;
+	}
+
+	ConstructorHelpers::FClassFinder<UUserWidget>OverWidget(TEXT("WidgetBlueprint'/Game/Blueprints/GameOver.GameOver_C'"));
+	if (OverWidget.Succeeded()) {
+		GameOver = OverWidget.Class;
+	}
+
 
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -119,13 +136,13 @@ ADoctor::ADoctor()
 void ADoctor::BeginPlay()
 {
 	Super::BeginPlay();
-	StartPlayer = FVector(2244.0f,6175.0f,110.0f);
+	StartPlayer = FVector(2244.0f, 6175.0f, 110.0f);
 }
 
 // Called every frame
-void ADoctor::Tick( float DeltaTime )
+void ADoctor::Tick(float DeltaTime)
 {
-	Super::Tick( DeltaTime );
+	Super::Tick(DeltaTime);
 	Tiro = false;
 
 	if (CursorToWorld != nullptr)
@@ -152,6 +169,8 @@ void ADoctor::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ADoctor::Nitrogenio);
 	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ADoctor::OnBottom);
 
+	InputComponent->BindAction("Pause", IE_Pressed, this, &ADoctor::Pause);
+
 }
 
 void ADoctor::SetLife(int NewLife) {
@@ -167,15 +186,26 @@ void ADoctor::OnDeath() {
 	AudioComp->SetSound(HitSound);
 	AudioComp->Play();
 	if (Life <= 0) {
-		Life = 3000;
-		SetActorLocation(StartPlayer);
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			APlayerController* PlayerController =
+				UGameplayStatics::GetPlayerController(World, 0);
+			if (PlayerController != nullptr && UserWidget != NULL) {
+				PlayerController->SetPause(true);
+				UUserWidget* UserW = UWidgetBlueprintLibrary::Create(World, GameOver, PlayerController);
+				if (UserW != nullptr) {
+					UserW->AddToViewport();
+					PlayerController->bShowMouseCursor = true;
+				}
+			}
+		}
 	}
 }
 
 
 //Energia
 void ADoctor::SetPower(int NewPower) {
-	if (NewPower > 0 && Power+NewPower<3000) {
+	if (NewPower > 0 && Power + NewPower < 3000) {
 		NewPower = NewPower + Power;
 	}
 }
@@ -196,14 +226,14 @@ void ADoctor::Cura() {
 	for (int i = 0; i < Curas.Num(); i++) {
 		if (Curas[i]->IsA(ACyborg::StaticClass())) {
 			ACyborg* Cyborg = Cast<ACyborg>(Curas[i]);
-			if(Cyborg->GetLife()+100 <5000){
-				Cyborg->SetLife(Cyborg->GetLife()+100);
+			if (Cyborg->GetLife() + 100 < 5000) {
+				Cyborg->SetLife(Cyborg->GetLife() + 100);
 			}
 		}
 	}
-if (Life + 120 < 3000){
-	Life = Life + 120;
-}
+	if (Life + 120 < 3000) {
+		Life = Life + 120;
+	}
 }
 
 void ADoctor::Bomba() {
@@ -213,9 +243,9 @@ void ADoctor::Bomba() {
 	if (World != nullptr) {
 		FRotator Rotation = RootComponent->GetComponentRotation();
 		AProjectileActor* Proj = World->SpawnActor<AProjectileActor>
-			(GetActorLocation(), Rotation,SpawnParameters);
+			(GetActorLocation(), Rotation, SpawnParameters);
 		if (Proj != nullptr) {
-		//	UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
+			//	UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
 		}
 	}
 
@@ -228,25 +258,28 @@ void ADoctor::Quimico() {
 	for (int i = 0; i < Colidido.Num(); i++) {
 		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
-			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-100);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife() - 100);
 			InimigoPequeno->InimigoPeqDeath();
-				Power = Power+100;
-		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+			Power = Power + 100;
+		}
+		else if (Colidido[i]->IsA(AInimigoMedium::StaticClass())) {
 			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
-			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 200);
 			InimigoMedio->InimigoMedDeath();
-				Power = Power+100;
-		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+			Power = Power + 100;
+		}
+		else if (Colidido[i]->IsA(ATowers::StaticClass())) {
 			ATowers* Tower = Cast<ATowers>(Colidido[i]);
-			Tower->SetLife(Tower->GetLife()-100);
+			Tower->SetLife(Tower->GetLife() - 100);
 			Tower->OnDeath();
-			Power = Power+100;
-		}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+			Power = Power + 100;
+		}
+		else if (Colidido[i]->IsA(ABoss::StaticClass())) {
 			ABoss* Boss = Cast<ABoss>(Colidido[i]);
-			if(Boss->GetTorres()<=0){
-				Boss->SetLife(Boss->GetLife()-100);
+			if (Boss->GetTorres() <= 0) {
+				Boss->SetLife(Boss->GetLife() - 100);
 				Boss->OnDeath();
-				Power = Power+100;
+				Power = Power + 100;
 			}
 		}
 	}
@@ -254,30 +287,32 @@ void ADoctor::Quimico() {
 
 
 void ADoctor::Nitrogenio() {
-	if(SuperPower){
+	if (SuperPower) {
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
 		NitrogenioPart->ToggleActive();
 		for (int i = 0; i < Colidido.Num(); i++) {
 			if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
 				AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
-				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife() - 200);
 				InimigoPequeno->InimigoPeqDeath();
-				//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
-			}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+			}
+			else if (Colidido[i]->IsA(AInimigoMedium::StaticClass())) {
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
-				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 200);
 				InimigoMedio->InimigoMedDeath();
-			}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+			}
+			else if (Colidido[i]->IsA(ATowers::StaticClass())) {
 				ATowers* Tower = Cast<ATowers>(Colidido[i]);
-				Tower->SetLife(Tower->GetLife()-100);
+				Tower->SetLife(Tower->GetLife() - 100);
 				Tower->OnDeath();
-			}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+			}
+			else if (Colidido[i]->IsA(ABoss::StaticClass())) {
 				ABoss* Boss = Cast<ABoss>(Colidido[i]);
-				if(Boss->GetTorres()<=0){
-					Boss->SetLife(Boss->GetLife()-100);
+				if (Boss->GetTorres() <= 0) {
+					Boss->SetLife(Boss->GetLife() - 100);
 					Boss->OnDeath();
-					Power = Power+100;
+					Power = Power + 100;
 				}
 			}
 		}
@@ -290,10 +325,10 @@ void ADoctor::OnBottom() {
 	CollisionComp->GetOverlappingActors(AtoresColetaveis);
 
 	for (int i = 0; i < AtoresColetaveis.Num(); i++) {
-		 if (AtoresColetaveis[i]->IsA(ABottom::StaticClass())) {
+		if (AtoresColetaveis[i]->IsA(ABottom::StaticClass())) {
 			ABottom* Botao = Cast<ABottom>(AtoresColetaveis[i]);
-			if(Botao->GetBottomNum()==Id){
-					Botao->OnPressed();
+			if (Botao->GetBottomNum() == Id) {
+				Botao->OnPressed();
 			}
 		}
 	}
@@ -308,6 +343,23 @@ void ADoctor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 			Life = Life - 100;
 
 			UE_LOG(LogTemp, Warning, TEXT("TIRO"));
+		}
+	}
+}
+
+void ADoctor::Pause() {
+	UWorld* World = GetWorld();
+	if (World != nullptr) {
+		APlayerController* PlayerController =
+			UGameplayStatics::GetPlayerController(World, 0);
+		if (PlayerController != nullptr && UserWidget != NULL) {
+			PlayerController->SetPause(true);
+			UUserWidget* UserW = UWidgetBlueprintLibrary::Create(World, UserWidget, PlayerController);
+			if (UserW != nullptr) {
+				UserW->AddToViewport();
+				PlayerController->bShowMouseCursor = true;
+			}
+
 		}
 	}
 }

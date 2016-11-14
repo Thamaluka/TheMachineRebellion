@@ -12,7 +12,7 @@ AJogoGameMode::AJogoGameMode() {
 	PlayerControllerClass = AMyPlayerController::StaticClass();
 
 	//DefaultPawnClass = ACyborg::StaticClass();
-//	HUDClass = ACyborgHUD::StaticClass();
+	//HUDClass = ACyborgHUD::StaticClass();
 
 	DefaultPawnClass = ADoctor::StaticClass();
 	HUDClass = ADoctorHUD::StaticClass();

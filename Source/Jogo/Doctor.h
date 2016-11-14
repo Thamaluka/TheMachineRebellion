@@ -44,6 +44,12 @@ public:
 	void Nitrogenio();
 	void OnBottom();
 
+	void Pause();
+
+	TSubclassOf<class UUserWidget> UserWidget;
+
+	TSubclassOf<class UUserWidget> GameOver;
+
 	USoundCue* HitSound;
 	UAudioComponent* AudioComp;
 
