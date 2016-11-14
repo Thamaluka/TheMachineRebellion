@@ -48,6 +48,8 @@ public:
 
 	TSubclassOf<class UUserWidget> UserWidget;
 
+	TSubclassOf<class UUserWidget> GameOver;
+
 	USoundCue* HitSound;
 	UAudioComponent* AudioComp;
 

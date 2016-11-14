@@ -6,6 +6,16 @@
 #include "InimigoBot.h"
 #include "InimigoMedium.h"
 
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
+#include "Runtime/Engine/Classes/Components/DecalComponent.h"
+#include "Runtime/UMG/Public/UMG.h"
+#include "Runtime/UMG/Public/UMGStyle.h"
+#include "Runtime/UMG/Public/IUMGModule.h"
+#include "Runtime/UMG/Public/Slate/SObjectWidget.h"
+#include "Runtime/UMG/Public/Blueprint/UserWidget.h"
+#include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
+#include "Blueprint/UserWidget.h"
+
 
 
 // Sets default values
@@ -20,7 +30,7 @@ ABoss::ABoss()
 	}
 	Mesh->SetWorldScale3D(FVector(2.0f,4.5f,2.0f));
 
-	CountdownTime = 1000.0f;
+	CountdownTime = 100.0f;
 
 	static ConstructorHelpers::FObjectFinder<UBlueprint>BotBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/InimigoBotAnim/AIInimigoBot.AIInimigoBot'"));
 	if (BotBlueprint.Object) {
@@ -30,6 +40,11 @@ ABoss::ABoss()
 	static ConstructorHelpers::FObjectFinder<UBlueprint>MedBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/AIInimigoMedium.AIInimigoMedium'"));
 	if (MedBlueprint.Object) {
 		MyAi = (UClass*)MedBlueprint.Object->GeneratedClass;
+	}
+
+	ConstructorHelpers::FClassFinder<UUserWidget>Widget(TEXT("WidgetBlueprint'/Game/Blueprints/Decisao.Decisao_C'"));
+	if (Widget.Succeeded()) {
+		UserWidget = Widget.Class;
 	}
 
 }
@@ -50,7 +65,7 @@ void ABoss::Tick( float DeltaTime )
 
 	ABoss::TimerManager();
 	if (CountdownTime <= 0) {
-		CountdownTime = 1000.0f;
+		CountdownTime = 100.0f;
 	}
 
 	}
@@ -68,7 +83,7 @@ int ABoss::GetLife() {
 
 void ABoss::OnDeath() {
 	if (Life <= 0 && Torres<=0) {
-		Destroy();
+		TheEnd();
 	}
 }
 
@@ -123,5 +138,23 @@ int ABoss::GetTorres() {
 				AInimigoMedium* Med = World->SpawnActor<AInimigoMedium>(MyAi,MedLocation,Rotation,SpawnParameters);
 			}
 		}
+	 }
+ }
+
+
+ void ABoss::TheEnd(){
+	 UWorld* World = GetWorld();
+	 if (World != nullptr) {
+		 APlayerController* PlayerController =
+			 UGameplayStatics::GetPlayerController(World, 0);
+		 if (PlayerController != nullptr && UserWidget != NULL) {
+			 PlayerController->SetPause(true);
+			 UUserWidget* UserW = UWidgetBlueprintLibrary::Create(World, UserWidget, PlayerController);
+			 if (UserW != nullptr) {
+				 UserW->AddToViewport();
+				 PlayerController->bShowMouseCursor = true;
+			 }
+
+		 }
 	 }
  }

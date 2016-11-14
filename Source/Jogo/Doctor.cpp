@@ -122,6 +122,11 @@ ADoctor::ADoctor()
 		UserWidget = Widget.Class;
 	}
 
+	ConstructorHelpers::FClassFinder<UUserWidget>OverWidget(TEXT("WidgetBlueprint'/Game/Blueprints/GameOver.GameOver_C'"));
+	if (OverWidget.Succeeded()) {
+		GameOver = OverWidget.Class;
+	}
+
 
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -181,8 +186,19 @@ void ADoctor::OnDeath() {
 	AudioComp->SetSound(HitSound);
 	AudioComp->Play();
 	if (Life <= 0) {
-		Life = 3000;
-		SetActorLocation(StartPlayer);
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			APlayerController* PlayerController =
+				UGameplayStatics::GetPlayerController(World, 0);
+			if (PlayerController != nullptr && UserWidget != NULL) {
+				PlayerController->SetPause(true);
+				UUserWidget* UserW = UWidgetBlueprintLibrary::Create(World, GameOver, PlayerController);
+				if (UserW != nullptr) {
+					UserW->AddToViewport();
+					PlayerController->bShowMouseCursor = true;
+				}
+			}
+		}
 	}
 }
 
@@ -332,7 +348,6 @@ void ADoctor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 }
 
 void ADoctor::Pause() {
-	UE_LOG(LogTemp, Warning, TEXT("Pause"));
 	UWorld* World = GetWorld();
 	if (World != nullptr) {
 		APlayerController* PlayerController =

@@ -39,6 +39,10 @@ public:
 	void SpawnEnemies();
 	void SpawnEnemiesMed();
 
+	void TheEnd();
+
+
+	TSubclassOf<class UUserWidget> UserWidget;
 private:
 
 
