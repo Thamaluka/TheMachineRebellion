@@ -28,6 +28,10 @@ APlataforma::APlataforma()
 	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &APlataforma::OnOverlapBegin);
 	MeshComp->OnComponentEndOverlap.AddDynamic(this, &APlataforma::OnOverlapEnd);
 	MeshComp->SetCollisionProfileName("OverlapAll");
+
+
+	bReplicates = true;
+	bReplicateMovement = true;
 }
 
 // Called when the game starts or when spawned

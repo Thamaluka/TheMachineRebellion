@@ -52,6 +52,9 @@ AProjectileActor::AProjectileActor()
 
 	InitialLifeSpan = 15.0f;
 
+	bReplicates = true;
+	bReplicateMovement = true;
+
 }
 
 // Called when the game starts or when spawned

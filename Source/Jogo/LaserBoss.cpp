@@ -10,7 +10,7 @@ ALaserBoss::ALaserBoss()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
+
 
 	LaserPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("LaserPart"));
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/Fire/P_Beam_Laser_Fire.P_Beam_Laser_Fire'"));
@@ -18,8 +18,11 @@ ALaserBoss::ALaserBoss()
 		LaserPart->SetTemplate(ParticleSys.Object);
 	}
 	LaserPart->SetupAttachment(Root);
-	
+
 	LaserPart->bAutoActivate = true;
+
+	bReplicates = true;
+	bReplicateMovement = true;
 
 }
 
@@ -27,7 +30,7 @@ ALaserBoss::ALaserBoss()
 void ALaserBoss::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -43,4 +46,3 @@ void ALaserBoss::SetupPlayerInputComponent(class UInputComponent* InputComponent
 	Super::SetupPlayerInputComponent(InputComponent);
 
 }
-

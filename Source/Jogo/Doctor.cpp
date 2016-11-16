@@ -127,6 +127,8 @@ ADoctor::ADoctor()
 		GameOver = OverWidget.Class;
 	}
 
+	bReplicates = true;
+		bReplicateMovement = true;
 
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 

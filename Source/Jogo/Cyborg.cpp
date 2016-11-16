@@ -106,6 +106,8 @@ if (Widget.Succeeded()) {
 	UserWidget = Widget.Class;
 }
 
+bReplicates = true;
+	bReplicateMovement = true;
 
 }
 

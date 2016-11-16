@@ -32,6 +32,9 @@ ATowers::ATowers(){
 
 		Tower->OnComponentBeginOverlap.AddDynamic(this, &ATowers::OnOverlapBegin);
 
+	bReplicates = true;
+	bReplicateMovement = true;
+
 }
 
 // Called when the game starts or when spawned

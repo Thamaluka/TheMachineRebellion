@@ -40,6 +40,9 @@ ALaser::ALaser()
 
 	RootComponent = Laser;
 
+	bReplicates = true;
+	bReplicateMovement = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -60,12 +63,12 @@ void ALaser::Tick( float DeltaTime )
 	if (Open && Scale.Z>=0) {
 		Scale.Z -= 0.3f;
 		Laser->SetCollisionProfileName("NoCollision");
-		
+
 	}
 	else if (!Open && Scale.Z<5.0f) {
 		Scale.Z += 0.3f;
 		Laser->SetCollisionProfileName("BlockAllDynamic");
-		
+
 	}
 
 	Laser->SetWorldScale3D(Scale);
@@ -89,15 +92,15 @@ void ALaser::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 		ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 		Doctor->SetLife(Doctor->GetLife() - 50);
 		Doctor->OnDeath();
-		
+
 	}else
-	
+
 	if ((OtherActor != nullptr) && (OtherActor != this) &&
 		(OtherComp != nullptr) && (OtherActor->IsA(ACyborg::StaticClass()))) {
 
 		ACyborg* Cyborg = Cast<ACyborg>(OtherActor);
 		Cyborg->SetLife(Cyborg->GetLife() - 50);
 		Cyborg->OnDeath();
-		
+
 	}
 }

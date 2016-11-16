@@ -52,8 +52,9 @@ AInimigoBot::AInimigoBot()
 	AudioComp->bAutoActivate = false;
 	AudioComp->AttachTo(GetCapsuleComponent());
 
-	
-	
+	bReplicates = true;
+	bReplicateMovement = true;
+
 }
 
 

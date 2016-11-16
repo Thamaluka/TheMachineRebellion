@@ -47,6 +47,9 @@ ABoss::ABoss()
 		UserWidget = Widget.Class;
 	}
 
+	bReplicates = true;
+	bReplicateMovement = true;
+
 }
 
 // Called when the game starts or when spawned

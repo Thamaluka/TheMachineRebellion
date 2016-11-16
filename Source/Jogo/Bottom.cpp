@@ -33,6 +33,9 @@ ABottom::ABottom()
 	MeshComp->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	RootComponent = MeshComp;
 
+	bReplicates = true;
+	bReplicateMovement = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -56,7 +59,7 @@ void ABottom::OnPressed() {
 
 	if (Lasers.Num() > 0) {
 		ALaser*Laser = Cast<ALaser>(Lasers[0]);
-		
+
 		if (Laser->IsOpen()) {
 			Laser->SetOpen(false);
 			Material = Cast<UMaterial>(StaticLoadObject(UMaterial::StaticClass(), NULL, TEXT("Material'/Game/Materials/Acess.Acess'")));
