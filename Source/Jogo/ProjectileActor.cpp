@@ -31,14 +31,14 @@ AProjectileActor::AProjectileActor()
 		MeshComp->SetMaterial(0,Material.Object);
 	}
 	MeshComp->SetWorldLocation(FVector(0.0f, 0.0f, -30.0f));
-	MeshComp->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+	MeshComp->SetWorldScale3D(FVector(0.025f, 0.025f, 0.025f));
 	MeshComp->AttachTo(RootComponent);
 
 	Particle = CreateDefaultSubobject<UParticleSystemComponent>
 		(TEXT("Particle"));
 	Particle->bAutoActivate = true;
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>
-		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/Fire/P_Beam_Laser_Fire_Large.P_Beam_Laser_Fire_Large'"));
+		ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Spider/Fire/P_Spider_Proj_Fire_SM.P_Spider_Proj_Fire_SM'"));
 	if (ParticleSystem.Succeeded()) {
 		Particle->SetTemplate(ParticleSystem.Object);
 	}
@@ -47,8 +47,8 @@ AProjectileActor::AProjectileActor()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->UpdatedComponent = Root;
-	ProjectileMovement->InitialSpeed = 3000.0f;
-	ProjectileMovement->MaxSpeed = 3000.0f;
+	ProjectileMovement->InitialSpeed = 1000.0f;
+	ProjectileMovement->MaxSpeed = 5000.0f;
 
 	InitialLifeSpan = 15.0f;
 

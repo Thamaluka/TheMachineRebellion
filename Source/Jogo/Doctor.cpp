@@ -81,14 +81,14 @@ ADoctor::ADoctor()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
 	Life = 5000;
-	Power = 0;
+	Power = 3000;
 
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollectCollision"));
 	CollisionComp->InitSphereRadius(200.0f);
 	CollisionComp->AttachTo(RootComponent);
 
 	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("NitrogenioPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Ice_Shatter_01.P_Aura_Ice_Shatter_01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_CIN_Landing_Ice.P_CIN_Landing_Ice'"));
 	if (ParticleSystem.Succeeded()) {
 		NitrogenioPart->SetTemplate(ParticleSystem.Object);
 	}
@@ -97,7 +97,7 @@ ADoctor::ADoctor()
 
 
 	QuimicoPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("QuimicoPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Poison_Shatter_01.P_Aura_Poison_Shatter_01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Troll/Impact/P_TrollSwingImpact_Poison.P_TrollSwingImpact_Poison'"));
 	if (ParticleSys.Succeeded()) {
 		QuimicoPart->SetTemplate(ParticleSys.Object);
 	}
@@ -105,10 +105,11 @@ ADoctor::ADoctor()
 	QuimicoPart->bAutoActivate = false;
 
 	CuraPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("CuraPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Archive/P_HealthOrb_Pickup.P_HealthOrb_Pickup'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>Particle(TEXT("ParticleSystem'/Game/Particulas/P_Summon_Child_Startup.P_Summon_Child_Startup'"));
 	if (Particle.Succeeded()) {
 		CuraPart->SetTemplate(Particle.Object);
 	}
+
 	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->bAutoActivate = false;
 
@@ -219,7 +220,7 @@ void ADoctor::SetPower(int NewPower) {
 }
 
 int ADoctor::GetPower() {
-	if (Power > 3000) {
+	if (Power >= 3000) {
 		SuperPower = true;
 	}
 	return Power;

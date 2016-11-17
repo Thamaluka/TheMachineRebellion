@@ -15,6 +15,6 @@ AJogoGameMode::AJogoGameMode() {
 	HUDClass = ACyborgHUD::StaticClass();
 
 	//DefaultPawnClass = ADoctor::StaticClass();
-//	HUDClass = ADoctorHUD::StaticClass();
+	//HUDClass = ADoctorHUD::StaticClass();
 
 }

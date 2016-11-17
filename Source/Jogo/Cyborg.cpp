@@ -76,7 +76,7 @@ ACyborg::ACyborg()
 
 
 	EnergyPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EnergyPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Whirlwind/P_Whirlwind_Lightning_Veng_Typh_01.P_Whirlwind_Lightning_Veng_Typh_01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/Particulas/P_Genno_Overhead_Imp_01.P_Genno_Overhead_Imp_01'"));
 	if (ParticleSys.Succeeded()) {
 			EnergyPart->SetTemplate(ParticleSys.Object);
 		}
@@ -91,7 +91,7 @@ ACyborg::ACyborg()
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->SetWorldLocation(FVector(0.0f,0.0f,-70.0f));
-	GetMesh()->SetWorldScale3D(FVector(1.0f,1.0f,1.0f));
+	GetMesh()->SetWorldScale3D(FVector(0.5f,0.5f,0.5f));
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -196,13 +196,13 @@ void ACyborg::OnDeath() {
 
 //Energia
 void ACyborg::SetPower(int NewPower) {
-	if (NewPower > 0 && Power+NewPower<5000) {
+	if (NewPower > 0 && Power+NewPower<=3000) {
 		NewPower = NewPower + Power;
 	}
 }
 
 int ACyborg::GetPower() {
-	if (Power > 5000) {
+	if (Power >= 3000) {
 		SuperPower = true;
 	}
 	return Power;
