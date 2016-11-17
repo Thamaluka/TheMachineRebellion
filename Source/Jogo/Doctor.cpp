@@ -61,11 +61,14 @@ ADoctor::ADoctor()
 	}
 
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Doctor(TEXT("SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Doctor(TEXT("SkeletalMesh'/Game/Models/Personagens/Doctor/Doctor.Doctor'"));
 	if (Doctor.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(Doctor.Object);
 	}
 	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
+	GetMesh()->SetWorldLocation(FVector(0.0f,0.0f,-70.0f));
+	GetMesh()->SetWorldScale3D(FVector(0.0739f,0.0739f,0.0739f));
+
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &ADoctor::OnOverlapBegin);
 	GetMesh()->OnComponentHit.AddDynamic(this, &ADoctor::OnHit);
 

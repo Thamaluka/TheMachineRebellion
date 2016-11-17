@@ -64,7 +64,7 @@ ACyborg::ACyborg()
 	CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
 	}
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Cyborg(TEXT("SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Cyborg(TEXT("SkeletalMesh'/Game/Models/Personagens/Cyborg/Cyborg.Cyborg'"));
 	if (Cyborg.Succeeded()) {
 		GetMesh()->SetSkeletalMesh(Cyborg.Object);
 	}
@@ -76,7 +76,7 @@ ACyborg::ACyborg()
 
 
 	EnergyPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("EnergyPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Aura/P_Aura_Ice_Shatter_01.P_Aura_Ice_Shatter_01'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Whirlwind/P_Whirlwind_Lightning_Veng_Typh_01.P_Whirlwind_Lightning_Veng_Typh_01'"));
 	if (ParticleSys.Succeeded()) {
 			EnergyPart->SetTemplate(ParticleSys.Object);
 		}
@@ -90,6 +90,8 @@ ACyborg::ACyborg()
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
+	GetMesh()->SetWorldLocation(FVector(0.0f,0.0f,-70.0f));
+	GetMesh()->SetWorldScale3D(FVector(1.0f,1.0f,1.0f));
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
