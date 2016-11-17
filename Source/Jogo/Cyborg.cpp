@@ -112,6 +112,11 @@ if (Widget.Succeeded()) {
 	UserWidget = Widget.Class;
 }
 
+ConstructorHelpers::FClassFinder<UUserWidget>OverWidget(TEXT("WidgetBlueprint'/Game/Blueprints/GameOver.GameOver_C'"));
+if (OverWidget.Succeeded()) {
+	GameOver = OverWidget.Class;
+}
+
 bReplicates = true;
 	bReplicateMovement = true;
 
@@ -148,10 +153,13 @@ void ACyborg::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 	InputComponent->BindAction("PowerQ", IE_Pressed, this, &ACyborg::Escudo);
 	InputComponent->BindAction("SuperPowerR", IE_Pressed, this, &ACyborg::Energy);
+	InputComponent->BindAction("PowerW", IE_Pressed, this, &ACyborg::Attack);
+	InputComponent->BindAction("PowerE", IE_Pressed, this, &ACyborg::StrongAttack);
+
 	InputComponent->BindAction("MouseLeft", IE_Pressed, this, &ACyborg::OnBottom);
+
 	InputComponent->BindAction("Pause", IE_Pressed, this, &ACyborg::Pause);
 
-//	InputComponent->BindAction("Pause", IE_Pressed, this, &ACyborg::Pause);
 
 
 }
@@ -169,8 +177,19 @@ void ACyborg::OnDeath() {
 	AudioComp->SetSound(HitSound);
 	AudioComp->Play();
 	if (Life <= 0) {
-		Life = 5000;
-		SetActorLocation(StartPlayer);
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			APlayerController* PlayerController =
+				UGameplayStatics::GetPlayerController(World, 0);
+			if (PlayerController != nullptr && UserWidget != NULL) {
+				PlayerController->SetPause(true);
+				UUserWidget* UserW = UWidgetBlueprintLibrary::Create(World, GameOver, PlayerController);
+				if (UserW != nullptr) {
+					UserW->AddToViewport();
+					PlayerController->bShowMouseCursor = true;
+				}
+			}
+		}
 	}
 }
 
@@ -196,11 +215,10 @@ void ACyborg::Escudo(){
 		FRotator Rotation = RootComponent->GetComponentRotation();
 		AEscudo* Escudo = World->SpawnActor<AEscudo>(GetActorLocation(), Rotation, SpawnParameters);
 	}
-
 }
 
 void ACyborg::Energy(){
-//	if(SuperPower){
+	if(SuperPower){
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
 		EnergyPart->ToggleActive();
@@ -230,7 +248,75 @@ void ACyborg::Energy(){
 				}
 			}
 		}
-	//}
+	}
+}
+
+void ACyborg::Attack(){
+	TArray<AActor*> Colidido;
+	CollisionComp->GetOverlappingActors(Colidido);
+
+	//PlayAnimacaoAttack01
+
+	for (int i = 0; i < Colidido.Num(); i++) {
+		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
+			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+			InimigoPequeno->InimigoPeqDeath();
+			Power = Power+100;
+			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+			InimigoMedio->InimigoMedDeath();
+			Power = Power+200;
+		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+			ATowers* Tower = Cast<ATowers>(Colidido[i]);
+			Tower->SetLife(Tower->GetLife()-200);
+			Tower->OnDeath();
+			Power = Power+200;
+		}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+			ABoss* Boss = Cast<ABoss>(Colidido[i]);
+			if(Boss->GetTorres()<=0){
+				Boss->SetLife(Boss->GetLife()-100);
+				Boss->OnDeath();
+				Power = Power+100;
+			}
+		}
+	}
+}
+
+void ACyborg::StrongAttack(){
+	TArray<AActor*> Colidido;
+	CollisionComp->GetOverlappingActors(Colidido);
+
+	//PlayAnimacaoAttack02
+
+	for (int i = 0; i < Colidido.Num(); i++) {
+		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
+			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+			InimigoPequeno->InimigoPeqDeath();
+			Power = Power+100;
+			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
+		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
+			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+			InimigoMedio->InimigoMedDeath();
+			Power = Power+200;
+		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
+			ATowers* Tower = Cast<ATowers>(Colidido[i]);
+			Tower->SetLife(Tower->GetLife()-200);
+			Tower->OnDeath();
+			Power = Power+200;
+		}else if(Colidido[i]->IsA(ABoss::StaticClass())){
+			ABoss* Boss = Cast<ABoss>(Colidido[i]);
+			if(Boss->GetTorres()<=0){
+				Boss->SetLife(Boss->GetLife()-100);
+				Boss->OnDeath();
+				Power = Power+100;
+			}
+		}
+	}
 }
 
 //Colisao com o botao para abertura do laser

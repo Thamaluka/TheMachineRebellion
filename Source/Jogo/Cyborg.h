@@ -41,6 +41,8 @@ public:
 	//Poderes
 	void Escudo();
 	void Energy();
+	void Attack();
+	void StrongAttack();
 
 	//Puzzles
 	void OnBottom();
@@ -48,6 +50,8 @@ public:
 
 	void Pause();
 	TSubclassOf<class UUserWidget> UserWidget;
+
+	TSubclassOf<class UUserWidget> GameOver;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
