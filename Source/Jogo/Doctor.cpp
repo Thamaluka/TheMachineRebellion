@@ -11,6 +11,7 @@
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/UserWidget.h"
+
 #include "ProjectileActor.h"
 #include "InimigoBot.h"
 #include "Bottom.h"
@@ -18,6 +19,7 @@
 #include "InimigoMedium.h"
 #include "Towers.h"
 #include "Boss.h"
+#include "LaserBoss.h"
 
 
 // Sets default values
@@ -65,6 +67,7 @@ ADoctor::ADoctor()
 	}
 	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &ADoctor::OnOverlapBegin);
+	GetMesh()->OnComponentHit.AddDynamic(this, &ADoctor::OnHit);
 
 
 	CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
@@ -343,11 +346,28 @@ void ADoctor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 		if (!Tiro) {
 			AProjectileActor* Projectile = Cast<AProjectileActor>(OtherActor);
 			Life = Life - 100;
-
-			UE_LOG(LogTemp, Warning, TEXT("TIRO"));
 		}
 	}
 }
+
+void ADoctor::OnHit(UPrimitiveComponent* HitComponent, AActor*OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	if ((OtherActor != nullptr) && (OtherActor != this) &&
+		(OtherComp != nullptr) && (OtherActor->IsA(AProjectileActor::StaticClass()))) {
+		if (!Tiro) {
+			AProjectileActor* Projectile = Cast<AProjectileActor>(OtherActor);
+			Life = Life - 100;
+
+			UE_LOG(LogTemp, Warning, TEXT("TIRO"));
+		}
+	}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ALaserBoss::StaticClass()))) {
+				ALaserBoss* Laser = Cast<ALaserBoss>(OtherActor);
+				Life = Life -50;
+			}
+}
+
+
+
+
 
 void ADoctor::Pause() {
 	UWorld* World = GetWorld();

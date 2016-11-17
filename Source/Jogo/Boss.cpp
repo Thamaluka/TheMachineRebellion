@@ -5,6 +5,7 @@
 #include "Towers.h"
 #include "InimigoBot.h"
 #include "InimigoMedium.h"
+#include "LaserBoss.h"
 
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
@@ -40,6 +41,11 @@ ABoss::ABoss()
 	static ConstructorHelpers::FObjectFinder<UBlueprint>MedBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/AIInimigoMedium.AIInimigoMedium'"));
 	if (MedBlueprint.Object) {
 		MyAi = (UClass*)MedBlueprint.Object->GeneratedClass;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint>LaserBlueprint(TEXT("Blueprint'/Game/Blueprints/EnemyForlder/MyLaserBoss.MyLaserBoss'"));
+	if (LaserBlueprint.Object) {
+		MyBossLaser = (UClass*)LaserBlueprint.Object->GeneratedClass;
 	}
 
 	ConstructorHelpers::FClassFinder<UUserWidget>Widget(TEXT("WidgetBlueprint'/Game/Blueprints/Decisao.Decisao_C'"));
@@ -157,7 +163,18 @@ int ABoss::GetTorres() {
 				 UserW->AddToViewport();
 				 PlayerController->bShowMouseCursor = true;
 			 }
-
 		 }
 	 }
  }
+
+ void ABoss::SpawnLaser(){
+	 FActorSpawnParameters SpawnParameters;
+	 UWorld* const World = GetWorld();
+	 if (World != nullptr) {
+		 FRotator Rotation = FRotator(0.0f,0.0f,-90.0f);
+		 FVector LaserLocation = FVector(200.0f,-200.0f,20.0f);
+		 ALaserBoss* Laser = World->SpawnActor<ALaserBoss>(MyBossLaser,LaserLocation,Rotation,SpawnParameters);
+	 }
+ }
+
+ 

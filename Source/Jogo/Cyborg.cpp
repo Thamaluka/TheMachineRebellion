@@ -13,12 +13,14 @@
 #include "Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/UserWidget.h"
 
+#include "ProjectileActor.h"
 #include "InimigoBot.h"
 #include "Bottom.h"
 #include "Escudo.h"
 #include "InimigoMedium.h"
 #include "Towers.h"
 #include "Boss.h"
+#include "LaserBoss.h"
 
 
 
@@ -53,6 +55,8 @@ ACyborg::ACyborg()
 
 	CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
 	CursorToWorld->SetupAttachment(RootComponent);
+
+	GetMesh()->OnComponentHit.AddDynamic(this, &ACyborg::OnHit);
 
 	static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(TEXT("Material'/Game/Models/M_Cursor_Cyborg.M_Cursor_Cyborg'"));
 	if (DecalMaterialAsset.Succeeded())
@@ -257,3 +261,18 @@ void ACyborg::Pause(){
 		}
 	}
 }
+
+
+
+void ACyborg::OnHit(UPrimitiveComponent* HitComponent, AActor*OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	if ((OtherActor != nullptr) && (OtherActor != this) &&
+		(OtherComp != nullptr) && (OtherActor->IsA(AProjectileActor::StaticClass()))) {
+			AProjectileActor* Projectile = Cast<AProjectileActor>(OtherActor);
+			Life = Life - 100;
+
+			UE_LOG(LogTemp, Warning, TEXT("TIRO"));
+		}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ALaserBoss::StaticClass()))) {
+					ALaserBoss* Laser = Cast<ALaserBoss>(OtherActor);
+					Life = Life -50;
+				}
+	}

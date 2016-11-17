@@ -34,6 +34,7 @@ ALaser::ALaser()
 		if (SoundCue.Succeeded()) {
 			SpawnSound = SoundCue.Object;
 		}
+		
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->bAutoActivate = false;
 	AudioComp->AttachTo(Laser);

@@ -26,7 +26,7 @@ AInimigoMedium::AInimigoMedium()
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AInimigoMedium::OnOverlapBegin);
 
 	bReplicates = true;
-		bReplicateMovement = true;
+	bReplicateMovement = true;
 
 }
 

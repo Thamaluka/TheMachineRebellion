@@ -105,7 +105,7 @@ void AInimigoBot::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		InimigoPeqLife -= 50;
 		Projectile->DestroyProjectile();
 		InimigoPeqDeath();
-	}else 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
+	}else if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && (OtherActor->IsA(ADoctor::StaticClass()))) {
 
 			ADoctor* Doctor = Cast<ADoctor>(OtherActor);
 			Doctor->SetLife(Doctor->GetLife() - DamageAmount);

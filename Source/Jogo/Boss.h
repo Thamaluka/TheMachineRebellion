@@ -10,10 +10,6 @@ class JOGO_API ABoss : public AActor
 {
 	GENERATED_BODY()
 
-
-
-
-
 public:
 	// Sets default values for this actor's properties
 	ABoss();
@@ -26,6 +22,7 @@ public:
 
 	TSubclassOf<class AInimigoBot> MyAiBlueprint;
 	TSubclassOf<class AInimigoMedium>MyAi;
+	TSubclassOf<class ALaserBoss>MyBossLaser;
 
 
 	void SetLife(int NewLife);
@@ -38,6 +35,7 @@ public:
 	void OnDeath();
 	void SpawnEnemies();
 	void SpawnEnemiesMed();
+	void SpawnLaser();
 
 	void TheEnd();
 
