@@ -25,7 +25,7 @@ ACyborgHUD::ACyborgHUD(){
 		PowerTexture = TextureP.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UTexture2D>TextureHud(TEXT("Texture2D'/Game/Materials/HUDTest2.HUDTest2'"));
+	static ConstructorHelpers::FObjectFinder<UTexture2D>TextureHud(TEXT("Texture2D'/Game/Blueprints/Menu/main_button_1.main_button_1'"));
 	if (TextureHud.Succeeded()) {
 		HudCyborg = TextureHud.Object;
 	}
