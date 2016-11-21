@@ -172,7 +172,7 @@ int ABoss::GetTorres() {
 	 UWorld* const World = GetWorld();
 	 if (World != nullptr) {
 		 FRotator Rotation = FRotator(0.0f,0.0f,-90.0f);
-		 FVector LaserLocation = FVector(200.0f,-200.0f,20.0f);
+		 FVector LaserLocation = FVector(-800.0f,260.0f,20.0f);
 		 ALaserBoss* Laser = World->SpawnActor<ALaserBoss>(MyBossLaser,LaserLocation,Rotation,SpawnParameters);
 		 Laser->DestroyLaserBoss();
 	 }
