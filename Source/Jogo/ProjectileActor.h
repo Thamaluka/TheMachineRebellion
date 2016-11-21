@@ -22,6 +22,9 @@ public:
 
 	void DestroyProjectile();
 
+	UFUNCTION(BlueprintCallable,Category="Tiro")
+	void Particulas(int Tipo);
+
 private:
 
 	UBoxComponent* Root;

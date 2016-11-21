@@ -53,8 +53,11 @@ void ADoctorHUD::DrawHUD() {
 	FVector2D::ZeroVector);
 
 	DrawTexture(PowerTexture, 147, 105, Doctor->GetPower() / 15.3f,
-	7, 0, 0, Doctor->GetPower() /  15.3f,
+	7, 0, 0, Doctor->GetPower() / 15.3f,
 	5, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
+	
+
+	
 }
