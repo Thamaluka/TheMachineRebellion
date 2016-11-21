@@ -253,8 +253,9 @@ void ADoctor::Bomba() {
 	UWorld* World = GetWorld();
 	if (World != nullptr) {
 		FRotator Rotation = RootComponent->GetComponentRotation();
-		AProjectileActor* Proj = World->SpawnActor<AProjectileActor>
-			(GetActorLocation(), Rotation, SpawnParameters);
+		AProjectileActor* Proj = World->SpawnActor<AProjectileActor>(GetActorLocation(), Rotation, SpawnParameters);
+
+		Proj->Particulas(1);
 		if (Proj != nullptr) {
 			//	UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
 		}
