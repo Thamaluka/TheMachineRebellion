@@ -112,6 +112,7 @@ int ABoss::GetTorres() {
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
 		SpawnEnemies();
 		SpawnEnemiesMed();
+		SpawnLaser();
 	}
  }
 
@@ -135,7 +136,7 @@ int ABoss::GetTorres() {
 
 
  void ABoss::SpawnEnemiesMed() {
-	 int CountBot=3;
+	 int CountBot=2;
 	 for (int i =0 ; i < CountBot; i++) {
 	 	if(i <=CountBot){
 			FActorSpawnParameters SpawnParameters;
@@ -174,6 +175,5 @@ int ABoss::GetTorres() {
 		 FRotator Rotation = FRotator(0.0f,0.0f,-90.0f);
 		 FVector LaserLocation = FVector(-800.0f,260.0f,20.0f);
 		 ALaserBoss* Laser = World->SpawnActor<ALaserBoss>(MyBossLaser,LaserLocation,Rotation,SpawnParameters);
-		 Laser->DestroyLaserBoss();
 	 }
  }

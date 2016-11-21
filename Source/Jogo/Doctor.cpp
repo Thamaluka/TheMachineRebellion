@@ -109,7 +109,7 @@ ADoctor::ADoctor()
 	if (Particle.Succeeded()) {
 		CuraPart->SetTemplate(Particle.Object);
 	}
-
+	CuraPart->SetRelativeScale3D(FVector(4.0f,4.0f,4.0f));
 	CuraPart->SetupAttachment(CollisionComp);
 	CuraPart->bAutoActivate = false;
 
@@ -214,8 +214,8 @@ void ADoctor::OnDeath() {
 
 //Energia
 void ADoctor::SetPower(int NewPower) {
-	if (NewPower > 0 && Power + NewPower < 3000) {
-		NewPower = NewPower + Power;
+	if (NewPower >= 0 && Power + NewPower <= 3000) {
+		Power = NewPower + Power;
 	}
 }
 
@@ -272,26 +272,26 @@ void ADoctor::Quimico() {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife() - 100);
 			InimigoPequeno->InimigoPeqDeath();
-			Power = Power + 100;
+			SetPower(100);
 		}
 		else if (Colidido[i]->IsA(AInimigoMedium::StaticClass())) {
 			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 100);
 			InimigoMedio->InimigoMedDeath();
-			Power = Power + 100;
+			SetPower(100);
 		}
 		else if (Colidido[i]->IsA(ATowers::StaticClass())) {
 			ATowers* Tower = Cast<ATowers>(Colidido[i]);
 			Tower->SetLife(Tower->GetLife() - 100);
 			Tower->OnDeath();
-			Power = Power + 100;
+			SetPower(100);
 		}
 		else if (Colidido[i]->IsA(ABoss::StaticClass())) {
 			ABoss* Boss = Cast<ABoss>(Colidido[i]);
 			if (Boss->GetTorres() <= 0) {
 				Boss->SetLife(Boss->GetLife() - 100);
 				Boss->OnDeath();
-				Power = Power + 100;
+				SetPower(100);
 			}
 		}
 	}
@@ -299,7 +299,7 @@ void ADoctor::Quimico() {
 
 
 void ADoctor::Nitrogenio() {
-	if (SuperPower) {
+	if (Power>=3000) {
 		Power = Power -1500;
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
@@ -309,26 +309,26 @@ void ADoctor::Nitrogenio() {
 				AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife() - 200);
 				InimigoPequeno->InimigoPeqDeath();
-				Power = Power + 100;
+				SetPower(100);
 			}
 			else if (Colidido[i]->IsA(AInimigoMedium::StaticClass())) {
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 200);
 				InimigoMedio->InimigoMedDeath();
-				Power = Power + 100;
+				SetPower(100);
 			}
 			else if (Colidido[i]->IsA(ATowers::StaticClass())) {
 				ATowers* Tower = Cast<ATowers>(Colidido[i]);
 				Tower->SetLife(Tower->GetLife() - 200);
 				Tower->OnDeath();
-				Power = Power + 100;
+				SetPower(100);
 			}
 			else if (Colidido[i]->IsA(ABoss::StaticClass())) {
 				ABoss* Boss = Cast<ABoss>(Colidido[i]);
 				if (Boss->GetTorres() <= 0) {
 					Boss->SetLife(Boss->GetLife() - 200);
 					Boss->OnDeath();
-					Power = Power + 100;
+					SetPower(100);
 				}
 			}
 		}
