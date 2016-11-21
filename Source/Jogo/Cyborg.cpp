@@ -197,7 +197,7 @@ void ACyborg::OnDeath() {
 //Energia
 void ACyborg::SetPower(int NewPower) {
 	if (NewPower > 0 && Power+NewPower<=3000) {
-		NewPower = NewPower + Power;
+		Power = NewPower + Power;
 	}
 }
 
@@ -230,24 +230,25 @@ void ACyborg::Energy(){
 				AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
 				InimigoPequeno->InimigoPeqDeath();
-				Power = Power+100;
+				SetPower(100);
+			
 				//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 			}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
 				InimigoMedio->InimigoMedDeath();
-				Power = Power+100;
+				SetPower(100);
 			}else if(Colidido[i]->IsA(ATowers::StaticClass())){
 				ATowers* Tower = Cast<ATowers>(Colidido[i]);
 				Tower->SetLife(Tower->GetLife()-200);
 				Tower->OnDeath();
-				Power = Power+100;
+				SetPower(100);
 			}else if(Colidido[i]->IsA(ABoss::StaticClass())){
 				ABoss* Boss = Cast<ABoss>(Colidido[i]);
 				if(Boss->GetTorres()<=0){
 					Boss->SetLife(Boss->GetLife()-200);
 					Boss->OnDeath();
-					Power = Power+100;
+					SetPower(100);
 				}
 			}
 		}
@@ -265,24 +266,24 @@ void ACyborg::Attack(){
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-50);
 			InimigoPequeno->InimigoPeqDeath();
-			Power = Power+100;
+			SetPower(100);
 			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
 			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-50);
 			InimigoMedio->InimigoMedDeath();
-			Power = Power+200;
+			SetPower(100);
 		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
 			ATowers* Tower = Cast<ATowers>(Colidido[i]);
 			Tower->SetLife(Tower->GetLife()-50);
 			Tower->OnDeath();
-			Power = Power+200;
+			SetPower(100);
 		}else if(Colidido[i]->IsA(ABoss::StaticClass())){
 			ABoss* Boss = Cast<ABoss>(Colidido[i]);
 			if(Boss->GetTorres()<=0){
 				Boss->SetLife(Boss->GetLife()-50);
 				Boss->OnDeath();
-				Power = Power+100;
+				SetPower(100);
 			}
 		}
 	}
