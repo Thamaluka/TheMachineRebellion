@@ -23,7 +23,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
+
 
 	FORCEINLINE UStaticMeshComponent* GetMeshComp()const { return MeshComp; }
 
@@ -37,7 +37,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* MeshComp;
 	UPROPERTY(EditAnywhere)
-		float DamageAmount = 250;
+		float DamageAmount = 100;
 	UPROPERTY(EditAnywhere)
 		int InimigoPeqLife = 500;
 

@@ -28,13 +28,17 @@ ALaserBoss::ALaserBoss()
 void ALaserBoss::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Count = 500;
 }
 
 // Called every frame
 void ALaserBoss::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+
+	if(Count >0){
+		Count = Count -1;
+	}
 
 }
 
@@ -43,4 +47,9 @@ void ALaserBoss::SetupPlayerInputComponent(class UInputComponent* InputComponent
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
+}
+
+void ALaserBoss::DestroyLaserBoss(){
+
+	Destroy();
 }

@@ -42,20 +42,24 @@ void ACyborgHUD::DrawHUD() {
 	ACyborg* Cyborg = Cast<ACyborg>(UGameplayStatics::GetPlayerPawn(this, 0));
 
 
-	DrawTextureSimple(HudCyborg, 50, 50, 1.0f, false);
+	DrawTextureSimple(HudCyborg, 50, 50, 0.5f, false);
 
-	DrawTexture(MyTexture, 150, 109, Cyborg->GetLife()/33,
-	9, 0, 0, Cyborg->GetLife()/33,
+	DrawTexture(MyTexture, 147, 88, Cyborg->GetLife()/25.8f,
+	7, 0, 0, Cyborg->GetLife()/25.8f,
 	5, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
 
 //														x,y
-	DrawTexture(PowerTexture, 150, 91, Cyborg->GetPower() / 40,
-	9, 0, 0, Cyborg->GetPower() / 40,
-	9, FLinearColor::White,
+
+if(Cyborg->GetPower()>1){
+	DrawTexture(PowerTexture, 147, 105, Cyborg->GetPower() / 15.3f,
+	7, 0, 0, Cyborg->GetPower() / 15.3f,
+	5, FLinearColor::White,
 	EBlendMode::BLEND_Translucent, 1.0f, false, 0.0f,
 	FVector2D::ZeroVector);
+}
+
 
 
 

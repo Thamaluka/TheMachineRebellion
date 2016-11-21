@@ -204,6 +204,8 @@ void ACyborg::SetPower(int NewPower) {
 int ACyborg::GetPower() {
 	if (Power >= 3000) {
 		SuperPower = true;
+	}else{
+		SuperPower = false;
 	}
 	return Power;
 }
@@ -219,6 +221,7 @@ void ACyborg::Escudo(){
 
 void ACyborg::Energy(){
 	if(SuperPower){
+		Power = Power-1500;
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
 		EnergyPart->ToggleActive();
@@ -233,16 +236,16 @@ void ACyborg::Energy(){
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
 				InimigoMedio->InimigoMedDeath();
-				Power = Power+200;
+				Power = Power+100;
 			}else if(Colidido[i]->IsA(ATowers::StaticClass())){
 				ATowers* Tower = Cast<ATowers>(Colidido[i]);
 				Tower->SetLife(Tower->GetLife()-200);
 				Tower->OnDeath();
-				Power = Power+200;
+				Power = Power+100;
 			}else if(Colidido[i]->IsA(ABoss::StaticClass())){
 				ABoss* Boss = Cast<ABoss>(Colidido[i]);
 				if(Boss->GetTorres()<=0){
-					Boss->SetLife(Boss->GetLife()-100);
+					Boss->SetLife(Boss->GetLife()-200);
 					Boss->OnDeath();
 					Power = Power+100;
 				}
@@ -260,24 +263,24 @@ void ACyborg::Attack(){
 	for (int i = 0; i < Colidido.Num(); i++) {
 		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
-			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-50);
 			InimigoPequeno->InimigoPeqDeath();
 			Power = Power+100;
 			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
 			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
-			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-50);
 			InimigoMedio->InimigoMedDeath();
 			Power = Power+200;
 		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
 			ATowers* Tower = Cast<ATowers>(Colidido[i]);
-			Tower->SetLife(Tower->GetLife()-200);
+			Tower->SetLife(Tower->GetLife()-50);
 			Tower->OnDeath();
 			Power = Power+200;
 		}else if(Colidido[i]->IsA(ABoss::StaticClass())){
 			ABoss* Boss = Cast<ABoss>(Colidido[i]);
 			if(Boss->GetTorres()<=0){
-				Boss->SetLife(Boss->GetLife()-100);
+				Boss->SetLife(Boss->GetLife()-50);
 				Boss->OnDeath();
 				Power = Power+100;
 			}
@@ -294,18 +297,18 @@ void ACyborg::StrongAttack(){
 	for (int i = 0; i < Colidido.Num(); i++) {
 		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
-			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
+			InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-100);
 			InimigoPequeno->InimigoPeqDeath();
 			Power = Power+100;
 			//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 		}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
 			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
-			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-200);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife()-100);
 			InimigoMedio->InimigoMedDeath();
 			Power = Power+200;
 		}else if(Colidido[i]->IsA(ATowers::StaticClass())){
 			ATowers* Tower = Cast<ATowers>(Colidido[i]);
-			Tower->SetLife(Tower->GetLife()-200);
+			Tower->SetLife(Tower->GetLife()-100);
 			Tower->OnDeath();
 			Power = Power+200;
 		}else if(Colidido[i]->IsA(ABoss::StaticClass())){

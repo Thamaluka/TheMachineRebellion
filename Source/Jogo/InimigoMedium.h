@@ -36,7 +36,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* MeshComp;
 	UPROPERTY(EditAnywhere)
-		float DamageAmount = 250;
+		float DamageAmount = 200;
 	UPROPERTY(EditAnywhere)
 		int InimigoMedLife = 1000;
 

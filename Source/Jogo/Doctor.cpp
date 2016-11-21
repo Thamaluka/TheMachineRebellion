@@ -88,7 +88,7 @@ ADoctor::ADoctor()
 	CollisionComp->AttachTo(RootComponent);
 
 	NitrogenioPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("NitrogenioPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_CIN_Landing_Ice.P_CIN_Landing_Ice'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSystem(TEXT("ParticleSystem'/Game/Particulas/P_CIN_Landing_Ice.P_CIN_Landing_Ice'"));
 	if (ParticleSystem.Succeeded()) {
 		NitrogenioPart->SetTemplate(ParticleSystem.Object);
 	}
@@ -97,7 +97,7 @@ ADoctor::ADoctor()
 
 
 	QuimicoPart = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("QuimicoPart"));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Troll/Impact/P_TrollSwingImpact_Poison.P_TrollSwingImpact_Poison'"));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>ParticleSys(TEXT("ParticleSystem'/Game/Particulas/P_TrollSwingImpact_Poison.P_TrollSwingImpact_Poison'"));
 	if (ParticleSys.Succeeded()) {
 		QuimicoPart->SetTemplate(ParticleSys.Object);
 	}
@@ -135,7 +135,7 @@ ADoctor::ADoctor()
 	}
 
 	bReplicates = true;
-		bReplicateMovement = true;
+	bReplicateMovement = true;
 
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -222,6 +222,8 @@ void ADoctor::SetPower(int NewPower) {
 int ADoctor::GetPower() {
 	if (Power >= 3000) {
 		SuperPower = true;
+	}else{
+		SuperPower = false;
 	}
 	return Power;
 }
@@ -273,7 +275,7 @@ void ADoctor::Quimico() {
 		}
 		else if (Colidido[i]->IsA(AInimigoMedium::StaticClass())) {
 			AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
-			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 200);
+			InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 100);
 			InimigoMedio->InimigoMedDeath();
 			Power = Power + 100;
 		}
@@ -297,6 +299,7 @@ void ADoctor::Quimico() {
 
 void ADoctor::Nitrogenio() {
 	if (SuperPower) {
+		Power = Power -1500;
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
 		NitrogenioPart->ToggleActive();
@@ -305,21 +308,24 @@ void ADoctor::Nitrogenio() {
 				AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
 				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife() - 200);
 				InimigoPequeno->InimigoPeqDeath();
+				Power = Power + 100;
 			}
 			else if (Colidido[i]->IsA(AInimigoMedium::StaticClass())) {
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);
 				InimigoMedio->SetInimigoMedLife(InimigoMedio->GetInimigoMedLife() - 200);
 				InimigoMedio->InimigoMedDeath();
+				Power = Power + 100;
 			}
 			else if (Colidido[i]->IsA(ATowers::StaticClass())) {
 				ATowers* Tower = Cast<ATowers>(Colidido[i]);
-				Tower->SetLife(Tower->GetLife() - 100);
+				Tower->SetLife(Tower->GetLife() - 200);
 				Tower->OnDeath();
+				Power = Power + 100;
 			}
 			else if (Colidido[i]->IsA(ABoss::StaticClass())) {
 				ABoss* Boss = Cast<ABoss>(Colidido[i]);
 				if (Boss->GetTorres() <= 0) {
-					Boss->SetLife(Boss->GetLife() - 100);
+					Boss->SetLife(Boss->GetLife() - 200);
 					Boss->OnDeath();
 					Power = Power + 100;
 				}
@@ -385,7 +391,6 @@ void ADoctor::Pause() {
 				UserW->AddToViewport();
 				PlayerController->bShowMouseCursor = true;
 			}
-
 		}
 	}
 }

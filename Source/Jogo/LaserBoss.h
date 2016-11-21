@@ -23,6 +23,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+void DestroyLaserBoss();
+
 
 
 private:
@@ -35,6 +37,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		UParticleSystemComponent* LaserPart;
 
-
+int Count = 500;
 
 };
