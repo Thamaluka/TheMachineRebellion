@@ -101,7 +101,4 @@ void AProjectileActor::Particulas(int Tipo) {
 		}
 	}
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> dev
