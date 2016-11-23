@@ -6,15 +6,14 @@
 #include "JogoGameMode.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class JOGO_API AJogoGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
+
 public:
 	AJogoGameMode();
-	
-	
+
 };

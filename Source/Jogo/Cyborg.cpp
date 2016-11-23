@@ -220,7 +220,7 @@ void ACyborg::Escudo(){
 }
 
 void ACyborg::Energy(){
-	if(SuperPower){
+	if(Power >= 3000){
 		Power = Power-1500;
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
@@ -231,7 +231,7 @@ void ACyborg::Energy(){
 				InimigoPequeno->SetInimigoPeqLife(InimigoPequeno->GetInimigoPeqLife()-200);
 				InimigoPequeno->InimigoPeqDeath();
 				SetPower(100);
-			
+
 				//UE_LOG(LogTemp, Warning, TEXT("%d"), Inventory.Num());
 			}else if(Colidido[i]->IsA(AInimigoMedium::StaticClass())){
 				AInimigoMedium* InimigoMedio = Cast<AInimigoMedium>(Colidido[i]);

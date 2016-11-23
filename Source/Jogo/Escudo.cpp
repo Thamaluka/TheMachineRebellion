@@ -11,10 +11,11 @@ AEscudo::AEscudo()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>Shield(TEXT("StaticMesh'/Game/InfinityBladeEffects/Effects/FX_Meshes/Skills/SM_Shield_Rings_02.SM_Shield_Rings_02'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>Shield(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_WideCapsule.Shape_WideCapsule'"));
 	if (Shield.Succeeded()) {
 		MeshComp->SetStaticMesh(Shield.Object);
 	}
+	MeshComp->SetWorldScale3D(FVector(2.75f,0.25f,1.0f));
 
 
 	ConstructorHelpers::FObjectFinder<UMaterial>Material(TEXT("Material'/Game/InfinityBladeEffects/Effects/FX_Materials/Mobile/M_ShieldMesh_mobile.M_ShieldMesh_mobile'"));
@@ -24,7 +25,7 @@ AEscudo::AEscudo()
 	MeshComp->SetCollisionProfileName("BlockAllDynamic");
 	RootComponent = MeshComp;
 
-	bReplicates = true;
+bReplicates = true;
 bReplicateMovement = true;
 }
 
