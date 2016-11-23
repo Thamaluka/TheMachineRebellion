@@ -37,6 +37,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		UParticleSystemComponent* LaserPart;
 
-int Count = 500;
+	FTimerHandle CountdownTimerHandle;
+	float CountdownTime;
+	void TimerManager();
 
 };

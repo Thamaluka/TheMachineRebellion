@@ -11,7 +11,7 @@ AEscudo::AEscudo()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>Shield(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_WideCapsule.Shape_WideCapsule'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>Shield(TEXT("StaticMesh'/Game/Models/barreira.barreira'"));
 	if (Shield.Succeeded()) {
 		MeshComp->SetStaticMesh(Shield.Object);
 	}

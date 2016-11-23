@@ -19,6 +19,8 @@ ALaserBoss::ALaserBoss()
 
 	LaserPart->bAutoActivate = true;
 
+	CountdownTime = 100.0f;
+
 	bReplicates = true;
 	bReplicateMovement = true;
 
@@ -28,7 +30,7 @@ ALaserBoss::ALaserBoss()
 void ALaserBoss::BeginPlay()
 {
 	Super::BeginPlay();
-	Count = 500;
+	
 }
 
 // Called every frame
@@ -36,9 +38,12 @@ void ALaserBoss::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	if(Count >0){
-		Count = Count -1;
+	ALaserBoss::TimerManager();
+	if (CountdownTime <= 0) {
+		CountdownTime = 100.0f;
 	}
+
+	
 
 }
 
@@ -52,4 +57,12 @@ void ALaserBoss::SetupPlayerInputComponent(class UInputComponent* InputComponent
 void ALaserBoss::DestroyLaserBoss(){
 
 	Destroy();
+}
+
+void ALaserBoss::TimerManager() {
+	CountdownTime -= 1.0f;
+	if (CountdownTime <= 0.0f) {
+		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
+		DestroyLaserBoss();
+	}
 }
