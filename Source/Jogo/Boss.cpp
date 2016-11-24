@@ -144,7 +144,6 @@ int ABoss::GetTorres() {
 			if (World != nullptr) {
 				FRotator Rotation = RootComponent->GetComponentRotation();
 				FVector MedLocation = FVector(200.0f,-200.0f,20.0f);
-
 				AInimigoMedium* Med = World->SpawnActor<AInimigoMedium>(MyAi,MedLocation,Rotation,SpawnParameters);
 			}
 		}
