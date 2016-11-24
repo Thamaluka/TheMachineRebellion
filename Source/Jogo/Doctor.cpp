@@ -182,6 +182,7 @@ void ADoctor::Tick(float DeltaTime)
 	{
 		if (APlayerController* PC = Cast<APlayerController>(GetController()))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("PLayerController"));
 			FHitResult TraceHitResult;
 			PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
 			FVector CursorFV = TraceHitResult.ImpactNormal;
@@ -192,8 +193,7 @@ void ADoctor::Tick(float DeltaTime)
 	}
 
 
-	if (GetMesh()->GetAnimationMode() == EAnimationMode::AnimationSingleNode
-		&& GetCharacterMovement()->IsMovingOnGround() && CanCrouch() == true) {
+	if (GetMesh()->GetAnimationMode() == EAnimationMode::AnimationSingleNode && !GetMesh()->IsPlaying()) {
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	}
 }

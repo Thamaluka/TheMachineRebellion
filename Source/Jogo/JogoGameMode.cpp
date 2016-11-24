@@ -17,6 +17,6 @@ AJogoGameMode::AJogoGameMode() {
 
 
 	DefaultPawnClass = ADoctor::StaticClass();
-	HUDClass = ADoctorHUD::StaticClass();
+	//HUDClass = ADoctorHUD::StaticClass();
 
 }

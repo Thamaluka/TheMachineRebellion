@@ -61,8 +61,10 @@ void AMyPlayerController::MoveToTouchLocation(const ETouchIndex::Type FingerInde
 
 void AMyPlayerController::SetNewMoveDestination(const FVector DestLocation){
 	APawn* const Pawn = GetPawn();
+	UE_LOG(LogTemp, Warning, TEXT("Teste 1"));
 	if (Pawn)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Teste 2"));
 		UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
 		float const Distance = FVector::Dist(DestLocation, Pawn->GetActorLocation());
 
