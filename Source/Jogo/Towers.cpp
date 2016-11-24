@@ -12,7 +12,7 @@ ATowers::ATowers(){
 	PrimaryActorTick.bCanEverTick = true;
 
 	Tower = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Laser"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshTower(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cylinder.Shape_Cylinder'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshTower(TEXT("StaticMesh'/Game/Boss/MaquinaMae_pilar.MaquinaMae_pilar'"));
 	if (MeshTower.Succeeded()) {
 		Tower->SetStaticMesh(MeshTower.Object);
 	}

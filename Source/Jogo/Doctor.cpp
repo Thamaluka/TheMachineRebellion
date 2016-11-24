@@ -69,6 +69,27 @@ ADoctor::ADoctor()
 	GetMesh()->SetWorldLocation(FVector(0.0f,0.0f,-70.0f));
 	GetMesh()->SetWorldScale3D(FVector(0.0739f,0.0739f,0.0739f));
 
+	ConstructorHelpers::FObjectFinder<UAnimBlueprint>AnimWalk(TEXT("AnimBlueprint'/Game/Models/Personagens/Doctor/Animacao/DoctorWalk.DoctorWalk'"));
+	if (AnimWalk.Succeeded()) {
+		GetMesh()->SetAnimInstanceClass(AnimWalk.Object->GetAnimBlueprintGeneratedClass());
+	}
+
+	
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimFireLoad(TEXT("AnimSequence'/Game/Models/Personagens/Doctor/Animacao/Doctor_tiro_Anim.Doctor_tiro_Anim'"));
+	if (AnimFireLoad.Succeeded()) {
+		AnimFire = AnimFireLoad.Object;
+	}
+
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimAreaLoad(TEXT("AnimSequence'/Game/Models/Personagens/Doctor/Animacao/Quimico_Anim.Quimico_Anim'"));
+	if (AnimAreaLoad.Succeeded()) {
+		AnimArea = AnimAreaLoad.Object;
+	}
+
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimCureLoad(TEXT("AnimSequence'/Game/Models/Personagens/Doctor/Animacao/Cura_Anim.Cura_Anim'"));
+	if (AnimCureLoad.Succeeded()) {
+		AnimCure = AnimCureLoad.Object;
+	}
+
 	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &ADoctor::OnOverlapBegin);
 	GetMesh()->OnComponentHit.AddDynamic(this, &ADoctor::OnHit);
 
@@ -151,6 +172,9 @@ void ADoctor::BeginPlay()
 // Called every frame
 void ADoctor::Tick(float DeltaTime)
 {
+
+
+
 	Super::Tick(DeltaTime);
 	Tiro = false;
 
@@ -165,6 +189,12 @@ void ADoctor::Tick(float DeltaTime)
 			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
+	}
+
+
+	if (GetMesh()->GetAnimationMode() == EAnimationMode::AnimationSingleNode
+		&& GetCharacterMovement()->IsMovingOnGround() && CanCrouch() == true) {
+		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	}
 }
 
@@ -230,6 +260,9 @@ int ADoctor::GetPower() {
 
 //Poderes pelas teclas Q,W,E e R
 void ADoctor::Cura() {
+	if (AnimCure != nullptr) {
+		GetMesh()->PlayAnimation(AnimCure, false);
+	}
 	CuraPart->ToggleActive();
 	TArray<AActor*> Curas;
 	CollisionComp->GetOverlappingActors(Curas);
@@ -260,10 +293,16 @@ void ADoctor::Bomba() {
 			//	UE_LOG(LogTemp, Warning, TEXT("Spawn OK!"));
 		}
 	}
+	if (AnimFire != nullptr) {
+		GetMesh()->PlayAnimation(AnimFire, false);
+	}
 
 }
 
 void ADoctor::Quimico() {
+	if (AnimArea != nullptr) {
+		GetMesh()->PlayAnimation(AnimArea, false);
+	}
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 	QuimicoPart->ToggleActive();
@@ -300,6 +339,9 @@ void ADoctor::Quimico() {
 
 void ADoctor::Nitrogenio() {
 	if (Power>=3000) {
+		if (AnimArea != nullptr) {
+			GetMesh()->PlayAnimation(AnimArea, false);
+		}
 		Power = Power -1500;
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);

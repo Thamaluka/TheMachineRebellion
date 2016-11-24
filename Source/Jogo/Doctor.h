@@ -53,6 +53,17 @@ public:
 	USoundCue* HitSound;
 	UAudioComponent* AudioComp;
 
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* AnimFire;
+
+
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* AnimArea;
+
+
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* AnimCure;
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

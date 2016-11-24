@@ -25,7 +25,7 @@ ABoss::ABoss()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshBoss(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshBoss(TEXT("StaticMesh'/Game/Boss/MaquinaMae_tela.MaquinaMae_tela'"));
 	if (MeshBoss.Succeeded()) {
 		Mesh->SetStaticMesh(MeshBoss.Object);
 	}
