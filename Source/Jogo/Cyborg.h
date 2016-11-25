@@ -53,6 +53,18 @@ public:
 
 	TSubclassOf<class UUserWidget> GameOver;
 
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* AnimAtak01;
+
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* AnimAtak02;
+
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* AnimEscudo;
+
+		UPROPERTY(EditAnywhere)
+			UAnimSequence* AnimPower;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* TopDownCameraComponent;

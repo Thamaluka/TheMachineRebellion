@@ -69,6 +69,33 @@ ACyborg::ACyborg()
 		GetMesh()->SetSkeletalMesh(Cyborg.Object);
 	}
 
+	ConstructorHelpers::FObjectFinder<UAnimBlueprint>AnimWalk(TEXT("AnimBlueprint'/Game/Models/Personagens/Cyborg/Animacao/CyborgAnimBlueprint.CyborgAnimBlueprint'"));
+	if (AnimWalk.Succeeded()) {
+		GetMesh()->SetAnimInstanceClass(AnimWalk.Object->GetAnimBlueprintGeneratedClass());
+	}
+
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimAtak01Load(TEXT("AnimSequence'/Game/Models/Personagens/Cyborg/Animacao/Cyborg_Ataque01_Anim.Cyborg_Ataque01_Anim'"));
+	if (AnimAtak01Load.Succeeded()) {
+		AnimAtak01 = AnimAtak01Load.Object;
+	}
+
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimAtak02Load(TEXT("AnimSequence'/Game/Models/Personagens/Cyborg/Animacao/Cyborg_Ataque02_Anim.Cyborg_Ataque02_Anim'"));
+	if (AnimAtak02Load.Succeeded()) {
+		AnimAtak02 = AnimAtak02Load.Object;
+	}
+
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimEscudoLoad(TEXT("AnimSequence'/Game/Models/Personagens/Cyborg/Animacao/Cyborg_Escudo_Anim.Cyborg_Escudo_Anim'"));
+	if (AnimEscudoLoad.Succeeded()) {
+		AnimEscudo = AnimEscudoLoad.Object;
+	}
+
+	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimPowerLoad(TEXT("AnimSequence'/Game/Models/Personagens/Cyborg/Animacao/Cyborg_Raio_Anim.Cyborg_Raio_Anim'"));
+	if (AnimPowerLoad.Succeeded()) {
+		AnimPower = AnimPowerLoad.Object;
+	}
+
+
+
 
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollectCollision"));
 	CollisionComp->InitSphereRadius(200.0f);
@@ -145,6 +172,11 @@ void ACyborg::Tick( float DeltaTime )
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
 	}
+
+
+	if (GetMesh()->GetAnimationMode() == EAnimationMode::AnimationSingleNode && !GetMesh()->IsPlaying()) {
+		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	}
 }
 
 // Called to bind functionality to input
@@ -211,6 +243,9 @@ int ACyborg::GetPower() {
 }
 
 void ACyborg::Escudo(){
+	if (AnimEscudo != nullptr) {
+		GetMesh()->PlayAnimation(AnimEscudo, false);
+	}
 	FActorSpawnParameters SpawnParameters;
 	UWorld* World = GetWorld();
 	if (World != nullptr) {
@@ -220,7 +255,11 @@ void ACyborg::Escudo(){
 }
 
 void ACyborg::Energy(){
+
 	if(Power >= 3000){
+		if (AnimPower != nullptr) {
+			GetMesh()->PlayAnimation(AnimPower, false);
+		}
 		Power = Power-1500;
 		TArray<AActor*> Colidido;
 		CollisionComp->GetOverlappingActors(Colidido);
@@ -256,11 +295,14 @@ void ACyborg::Energy(){
 }
 
 void ACyborg::Attack(){
+
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 
 	//PlayAnimacaoAttack01
-
+	if (AnimAtak01 != nullptr) {
+		GetMesh()->PlayAnimation(AnimAtak01, false);
+	}
 	for (int i = 0; i < Colidido.Num(); i++) {
 		if (Colidido[i]->IsA(AInimigoBot::StaticClass())) {
 			AInimigoBot* InimigoPequeno = Cast<AInimigoBot>(Colidido[i]);
@@ -293,6 +335,9 @@ void ACyborg::StrongAttack(){
 	TArray<AActor*> Colidido;
 	CollisionComp->GetOverlappingActors(Colidido);
 
+	if (AnimAtak02 != nullptr) {
+		GetMesh()->PlayAnimation(AnimAtak02, false);
+	}
 	//PlayAnimacaoAttack02
 
 	for (int i = 0; i < Colidido.Num(); i++) {
