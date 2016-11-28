@@ -44,7 +44,7 @@ ACyborg::ACyborg()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bAbsoluteRotation = true;
 	CameraBoom->TargetArmLength = 1500.f;
-	CameraBoom->RelativeRotation = FRotator(-30.f, 0.f, 0.f);
+	CameraBoom->RelativeRotation = FRotator(-20.f, 0.f, 0.f);
 	CameraBoom->bDoCollisionTest = false;
 
 
@@ -118,7 +118,7 @@ ACyborg::ACyborg()
 	CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
 	GetMesh()->SetWorldRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->SetWorldLocation(FVector(0.0f,0.0f,-70.0f));
-	GetMesh()->SetWorldScale3D(FVector(0.5f,0.5f,0.5f));
+	GetMesh()->SetWorldScale3D(FVector(0.2f,0.2f,0.2f));
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
