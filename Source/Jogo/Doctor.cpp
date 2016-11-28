@@ -41,8 +41,8 @@ ADoctor::ADoctor()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->bAbsoluteRotation = true;
-	CameraBoom->TargetArmLength = 800.f;
-	CameraBoom->RelativeRotation = FRotator(-60.f, 0.f, 0.f);
+	CameraBoom->TargetArmLength = 1500.f;
+	CameraBoom->RelativeRotation = FRotator(-30.f, 0.f, 0.f);
 	CameraBoom->bDoCollisionTest = false;
 
 
@@ -74,7 +74,7 @@ ADoctor::ADoctor()
 		GetMesh()->SetAnimInstanceClass(AnimWalk.Object->GetAnimBlueprintGeneratedClass());
 	}
 
-	
+
 	ConstructorHelpers::FObjectFinder<UAnimSequence>AnimFireLoad(TEXT("AnimSequence'/Game/Models/Personagens/Doctor/Animacao/Doctor_tiro_Anim.Doctor_tiro_Anim'"));
 	if (AnimFireLoad.Succeeded()) {
 		AnimFire = AnimFireLoad.Object;
