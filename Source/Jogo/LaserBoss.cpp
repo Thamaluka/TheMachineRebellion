@@ -19,7 +19,9 @@ ALaserBoss::ALaserBoss()
 
 	LaserPart->bAutoActivate = true;
 
-	CountdownTime = 100.0f;
+
+
+	CountdownTime = 1000.0f;
 
 	bReplicates = true;
 	bReplicateMovement = true;

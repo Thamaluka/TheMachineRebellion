@@ -102,7 +102,7 @@ void AInimigoBot::SetInimigoPeqLife(int NewLife) {
 void AInimigoBot::InimigoPeqDeath() {
 	AudioComp->SetSound(DestroySound);
 	AudioComp->Play();
-	Dead->ToggleActive();
+
 	if (InimigoPeqLife <= 0) {
 		Death->ToggleActive();
 		Destroy();

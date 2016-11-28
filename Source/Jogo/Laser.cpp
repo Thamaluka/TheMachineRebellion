@@ -18,7 +18,7 @@ ALaser::ALaser()
 	if (MeshLaser.Succeeded()) {
 		Laser->SetStaticMesh(MeshLaser.Object);
 	}
-	Laser->SetWorldScale3D(FVector(0.1f,0.1f,4.5f));
+	Laser->SetWorldScale3D(FVector(0.1f,0.1f,10.75f));
 	Laser->SetWorldRotation(FRotator(0.0f,0.0f,90.0f));
 
 	Laser->SetCollisionProfileName("BlockAllDynamic");
@@ -66,7 +66,7 @@ void ALaser::Tick( float DeltaTime )
 		Laser->SetCollisionProfileName("NoCollision");
 
 	}
-	else if (!Open && Scale.Z<5.0f) {
+	else if (!Open && Scale.Z<10.70f) {
 		Scale.Z += 0.3f;
 		Laser->SetCollisionProfileName("BlockAllDynamic");
 

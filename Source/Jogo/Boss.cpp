@@ -110,9 +110,7 @@ int ABoss::GetTorres() {
 	 CountdownTime -= 1.0f;
 	if (CountdownTime <= 0.0f) {
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
-		SpawnEnemies();
-		SpawnEnemiesMed();
-		SpawnLaser();
+		
 	}
  }
 
@@ -125,8 +123,7 @@ int ABoss::GetTorres() {
 			UWorld* const World = GetWorld();
 			if (World != nullptr) {
 				FRotator Rotation = RootComponent->GetComponentRotation();
-				FVector Location = FVector(-580.0f,-240.0f,20.0f);
-				FVector MedLocation = FVector(-600.0f,-200.0f,20.0f);
+				FVector Location = FVector(6110.0f,-180.0f,-70.0f);
 				AInimigoBot* Bot = World->SpawnActor<AInimigoBot>(MyAiBlueprint, Location, Rotation, SpawnParameters);
 
 			}
@@ -143,7 +140,7 @@ int ABoss::GetTorres() {
 			UWorld* const World = GetWorld();
 			if (World != nullptr) {
 				FRotator Rotation = RootComponent->GetComponentRotation();
-				FVector MedLocation = FVector(200.0f,-200.0f,20.0f);
+				FVector MedLocation = FVector(6110.0f, -490.0f, -70.0f);
 				AInimigoMedium* Med = World->SpawnActor<AInimigoMedium>(MyAi,MedLocation,Rotation,SpawnParameters);
 			}
 		}
@@ -172,7 +169,7 @@ int ABoss::GetTorres() {
 	 UWorld* const World = GetWorld();
 	 if (World != nullptr) {
 		 FRotator Rotation = FRotator(0.0f,0.0f,-90.0f);
-		 FVector LaserLocation = FVector(-800.0f,260.0f,20.0f);
+		 FVector LaserLocation = FVector(6110.0f, -1140.0f,20.0f);
 		 ALaserBoss* Laser = World->SpawnActor<ALaserBoss>(MyBossLaser,LaserLocation,Rotation,SpawnParameters);
 	 }
  }
